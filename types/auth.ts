@@ -2,7 +2,7 @@ export interface LoginFormData {
   email: string;
   password: string;
 }
-export interface LoginFormProps extends React.ComponentProps<'div'> {
+export interface LoginFormProps extends Omit<React.ComponentProps<'div'>, 'onError'> {
   onLoginError?: (data: string) => void;
   onError?: (error: string) => void;
   redirectTo?: string;
