@@ -9,7 +9,7 @@ const HomePage = async (props: {
   const category = typeof searchParams.category === 'string' ? searchParams.category : undefined
 
   return (
-    <div className="py-8">
+    <div className="py-4 mx-4 lg:mx-0 lg:py-8">
       <ProductSection categorySlug={category} />
     </div>
   );

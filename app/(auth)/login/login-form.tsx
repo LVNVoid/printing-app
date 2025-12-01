@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -47,21 +47,31 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
+
   const onSubmit = async (data: LoginFormValues) => {
     setError('');
     setLoading(true);
 
     try {
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
-        redirect: true,
-        callbackUrl: '/',
+        redirect: false,
+        callbackUrl,
       });
+
+      if (result?.error) {
+        setError('Invalid email or password');
+        setLoading(false);
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
     } catch (err) {
       console.error(err);
       setError('An unexpected error occurred');
-    } finally {
       setLoading(false);
     }
   };

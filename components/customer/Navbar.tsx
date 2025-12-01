@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Menu, Printer, Search, ShoppingCart, User } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useSession, signOut } from 'next-auth/react';
 import {
@@ -21,145 +21,246 @@ import { useCart } from '@/components/customer/CartContext';
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
     const { data: session } = useSession();
-    const { cartCount, setIsOpen: setCartOpen } = useCart();
+    const { cartCount, setIsOpen: setCartOpen, clearCart } = useCart();
+
+    const handleLogout = () => {
+        clearCart();
+        signOut();
+    };
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-16 items-center gap-4 md:gap-8">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 group shrink-0">
-                    <div className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
-                        <Printer className="h-6 w-6 text-primary" />
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4">
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group shrink-0">
+                        <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
+                            <Printer className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
+                        </div>
+                        <span className="text-base sm:text-xl font-bold tracking-tight hidden xs:inline">
+                            PrintMaster
+                        </span>
+                        <span className="text-base sm:text-xl font-bold tracking-tight xs:hidden">
+                            PM
+                        </span>
+                    </Link>
+
+                    {/* Desktop Search Bar */}
+                    <div className="flex-1 max-w-xl mx-auto hidden lg:block">
+                        <div className="relative">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="search"
+                                placeholder="Search for products..."
+                                className="w-full bg-secondary/50 pl-9 focus-visible:bg-background"
+                            />
+                        </div>
                     </div>
-                    <span className="text-xl font-bold tracking-tight hidden md:block">PrintMaster</span>
-                </Link>
 
-                {/* Search Bar */}
-                <div className="flex-1 max-w-xl mx-auto hidden md:block">
-                    <div className="relative">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            type="search"
-                            placeholder="Search for products..."
-                            className="w-full bg-secondary/50 pl-9 focus-visible:bg-background"
-                        />
-                    </div>
-                </div>
+                    {/* Actions */}
+                    <div className="flex items-center gap-1 sm:gap-2 md:gap-3 shrink-0">
+                        {/* Mobile Search Toggle */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="lg:hidden h-8 w-8 sm:h-10 sm:w-10"
+                            onClick={() => setShowSearch(!showSearch)}
+                        >
+                            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+                            <span className="sr-only">Search</span>
+                        </Button>
 
-                {/* Actions */}
-                <div className="flex items-center gap-2 md:gap-4 shrink-0">
-                    <ModeToggle />
+                        {/* Theme Toggle */}
+                        <div className="hidden sm:block">
+                            <ModeToggle />
+                        </div>
 
-                    <Button variant="ghost" size="icon" className="relative" onClick={() => setCartOpen(true)}>
-                        <ShoppingCart className="h-5 w-5" />
-                        {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
-                                {cartCount}
-                            </span>
-                        )}
-                        <span className="sr-only">Cart</span>
-                    </Button>
+                        {/* Cart Button */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="relative h-8 w-8 sm:h-10 sm:w-10"
+                            onClick={() => setCartOpen(true)}
+                        >
+                            <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[9px] sm:text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+                                    {cartCount > 99 ? '99+' : cartCount}
+                                </span>
+                            )}
+                            <span className="sr-only">Cart</span>
+                        </Button>
 
-                    <div className="hidden md:flex items-center gap-2">
-                        {session ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="rounded-full">
-                                        <User className="h-5 w-5" />
-                                        <span className="sr-only">User menu</span>
+                        {/* Desktop User Menu */}
+                        <div className="hidden md:flex items-center gap-2">
+                            {!mounted ? (
+                                <div className="w-20 h-10" />
+                            ) : session ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="rounded-full">
+                                            <User className="h-5 w-5" />
+                                            <span className="sr-only">User menu</span>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-48">
+                                        <DropdownMenuLabel className="truncate">
+                                            {session.user.name}
+                                        </DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        {session.user.role === 'ADMIN' && (
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/admin/dashboard">Admin Dashboard</Link>
+                                            </DropdownMenuItem>
+                                        )}
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/orders">My Orders</Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={handleLogout}>
+                                            Log out
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : (
+                                <>
+                                    <Link href="/login">
+                                        <Button variant="ghost" size="sm">Log in</Button>
+                                    </Link>
+                                    <Link href="/register">
+                                        <Button size="sm">Sign Up</Button>
+                                    </Link>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Mobile Menu */}
+                        <div className="flex md:hidden">
+                            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                                <SheetTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
+                                        <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+                                        <span className="sr-only">Toggle menu</span>
                                     </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem asChild>
-                                        <Link href="/orders">My Orders</Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => signOut()}>
-                                        Log out
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        ) : (
-                            <>
-                                <Link href="/login">
-                                    <Button variant="ghost">Log in</Button>
-                                </Link>
-                                <Link href="/register">
-                                    <Button>Sign Up</Button>
-                                </Link>
-                            </>
-                        )}
-                    </div>
+                                </SheetTrigger>
+                                <SheetContent side="right" className="w-[280px] sm:w-[350px]">
+                                    <div className="flex flex-col gap-6 mt-6 mx-4">
+                                        {/* Mobile User Info */}
+                                        {mounted && session && (
+                                            <div className="flex items-center gap-3 pb-4 border-b">
+                                                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                                    <User className="h-5 w-5 text-primary" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-medium truncate">
+                                                        {session.user.name}
+                                                    </p>
+                                                    <p className="text-xs text-muted-foreground truncate">
+                                                        {session.user.email}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
 
-                    {/* Mobile Menu */}
-                    <div className="flex md:hidden">
-                        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                            <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    <Menu className="h-5 w-5" />
-                                    <span className="sr-only">Toggle menu</span>
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="right">
-                                <div className="flex flex-col gap-6 mt-6">
-                                    <div className="relative">
-                                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                                        <Input
-                                            type="search"
-                                            placeholder="Search products..."
-                                            className="w-full pl-9"
-                                        />
-                                    </div>
-                                    <nav className="flex flex-col gap-4">
-                                        <Link
-                                            href="/"
-                                            onClick={() => setIsOpen(false)}
-                                            className="text-lg font-medium hover:text-primary"
-                                        >
-                                            Home
-                                        </Link>
-                                        <Link
-                                            href="/products"
-                                            onClick={() => setIsOpen(false)}
-                                            className="text-lg font-medium hover:text-primary"
-                                        >
-                                            Products
-                                        </Link>
-                                        {session && (
+                                        {/* Navigation Links */}
+                                        <nav className="flex flex-col gap-3">
                                             <Link
-                                                href="/orders"
+                                                href="/"
                                                 onClick={() => setIsOpen(false)}
-                                                className="text-lg font-medium hover:text-primary"
+                                                className="text-base font-medium hover:text-primary transition-colors py-2"
                                             >
-                                                My Orders
+                                                Home
                                             </Link>
-                                        )}
-                                    </nav>
-                                    <div className="flex flex-col gap-2">
-                                        {session ? (
-                                            <Button variant="outline" className="w-full" onClick={() => signOut()}>
-                                                Log out
-                                            </Button>
-                                        ) : (
-                                            <>
-                                                <Link href="/login" onClick={() => setIsOpen(false)}>
-                                                    <Button variant="outline" className="w-full">
-                                                        Log in
+                                            <Link
+                                                href="/products"
+                                                onClick={() => setIsOpen(false)}
+                                                className="text-base font-medium hover:text-primary transition-colors py-2"
+                                            >
+                                                Products
+                                            </Link>
+                                            {mounted && session && (
+                                                <>
+                                                    {session.user.role === 'ADMIN' && (
+                                                        <Link
+                                                            href="/admin/dashboard"
+                                                            onClick={() => setIsOpen(false)}
+                                                            className="text-base font-medium hover:text-primary transition-colors py-2"
+                                                        >
+                                                            Admin Dashboard
+                                                        </Link>
+                                                    )}
+                                                    <Link
+                                                        href="/orders"
+                                                        onClick={() => setIsOpen(false)}
+                                                        className="text-base font-medium hover:text-primary transition-colors py-2"
+                                                    >
+                                                        My Orders
+                                                    </Link>
+                                                </>
+                                            )}
+                                        </nav>
+
+                                        {/* Theme Toggle for Mobile */}
+                                        <div className="flex items-center justify-between py-2 border-t">
+                                            <span className="text-sm font-medium">Theme</span>
+                                            <ModeToggle />
+                                        </div>
+
+                                        {/* Auth Buttons */}
+                                        {mounted && (
+                                            <div className="flex flex-col gap-2 pt-4 border-t">
+                                                {session ? (
+                                                    <Button
+                                                        variant="outline"
+                                                        className="w-full"
+                                                        onClick={() => {
+                                                            handleLogout();
+                                                            setIsOpen(false);
+                                                        }}
+                                                    >
+                                                        Log out
                                                     </Button>
-                                                </Link>
-                                                <Link href="/register" onClick={() => setIsOpen(false)}>
-                                                    <Button className="w-full">Sign Up</Button>
-                                                </Link>
-                                            </>
+                                                ) : (
+                                                    <>
+                                                        <Link href="/login" onClick={() => setIsOpen(false)}>
+                                                            <Button variant="outline" className="w-full">
+                                                                Log in
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href="/register" onClick={() => setIsOpen(false)}>
+                                                            <Button className="w-full">Sign Up</Button>
+                                                        </Link>
+                                                    </>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
-                                </div>
-                            </SheetContent>
-                        </Sheet>
+                                </SheetContent>
+                            </Sheet>
+                        </div>
                     </div>
                 </div>
+
+                {/* Mobile Search Bar (Collapsible) */}
+                {showSearch && (
+                    <div className="lg:hidden pb-3 pt-2 animate-in slide-in-from-top-2">
+                        <div className="relative">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="search"
+                                placeholder="Search products..."
+                                className="w-full pl-9 bg-secondary/50 focus-visible:bg-background"
+                                autoFocus
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </header>
     );

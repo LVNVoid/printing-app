@@ -22,11 +22,89 @@ export async function getCategories() {
   });
 }
 
-export async function getProducts() {
-  return await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: { pictures: true, category: true },
+export async function getProducts({
+  query,
+  categoryId,
+  page = 1,
+  limit = 10,
+}: {
+  query?: string;
+  categoryId?: string;
+  page?: number;
+  limit?: number;
+} = {}) {
+  const skip = (page - 1) * limit;
+
+  const where: any = {};
+
+  if (query) {
+    where.OR = [
+      { name: { contains: query, mode: 'insensitive' } },
+      { description: { contains: query, mode: 'insensitive' } },
+    ];
+  }
+
+  if (categoryId && categoryId !== 'all') {
+    where.categoryId = categoryId;
+  }
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      include: { pictures: true, category: true },
+      skip,
+      take: limit,
+    }),
+    prisma.product.count({ where }),
+  ]);
+
+  return {
+    products,
+    totalPages: Math.ceil(total / limit),
+    currentPage: page,
+    totalProducts: total,
+  };
+}
+
+const categorySchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+});
+
+export async function createCategory(formData: FormData) {
+  const result = categorySchema.safeParse({
+    name: formData.get('name'),
   });
+
+  if (!result.success) {
+    return { error: result.error.flatten().fieldErrors };
+  }
+
+  const slug = slugify(result.data.name, { lower: true, strict: true });
+  
+  // Check if slug exists
+  const existingCategory = await prisma.category.findUnique({
+    where: { slug },
+  });
+
+  if (existingCategory) {
+    return { error: { name: ['Category already exists'] } };
+  }
+
+  try {
+    await prisma.category.create({
+      data: {
+        name: result.data.name,
+        slug,
+      },
+    });
+
+    revalidatePath('/admin/products');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to create category:', error);
+    return { error: { name: ['Failed to create category'] } };
+  }
 }
 
 export async function getProduct(id: string) {

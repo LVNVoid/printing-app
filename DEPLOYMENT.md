@@ -17,7 +17,7 @@ The following environment variables are required for the application to function
 | `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | Your Cloudinary cloud name. |
 | `NEXT_PUBLIC_CLOUDINARY_API_KEY` | Your Cloudinary API key. |
 | `CLOUDINARY_API_SECRET` | Your Cloudinary API secret. |
-| `NEXT_AUTH_SECRET` | A random string used to encrypt session data. You can generate one with `openssl rand -base64 32`. |
+| `NEXTAUTH_SECRET` | A random string used to encrypt session data. You can generate one with `openssl rand -base64 32`. |
 | `NEXTAUTH_URL` | The URL of your deployed application (e.g., `https://your-project.vercel.app`). |
 
 ## Deployment Steps
@@ -30,7 +30,7 @@ The following environment variables are required for the application to function
 3.  **Configure Project**:
     - **Framework Preset**: Next.js (should be detected automatically).
     - **Root Directory**: `./` (default).
-    - **Build Command**: `prisma generate && next build` (or `npm run build` which runs this).
+    - **Build Command**: `npx prisma db push && next build` (This ensures the database schema is applied before the build).
     - **Output Directory**: `.next` (default).
     - **Install Command**: `npm install` (default).
 4.  **Add Environment Variables**:

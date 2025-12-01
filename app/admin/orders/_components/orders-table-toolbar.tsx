@@ -49,9 +49,10 @@ export function OrdersTableToolbar() {
             <div className="flex flex-1 items-center space-x-2">
                 <Input
                     placeholder="Filter orders..."
+                    className="max-w-xs"
                     defaultValue={searchParams.get('query')?.toString()}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="h-8 w-[150px] lg:w-[250px]"
+                // className="h-8 w-[150px] lg:w-[250px]"
                 />
                 <Select
                     defaultValue={searchParams.get('status')?.toString() || 'ALL'}
