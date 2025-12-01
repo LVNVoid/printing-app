@@ -26,8 +26,9 @@ async function main() {
     product = await prisma.product.create({
       data: {
         name: 'Test Product',
+        slug: 'test-product',
         price: 1000,
-        categoryId: category?.id,
+        categoryId: category?.id ?? null,
       },
     });
   }
@@ -46,7 +47,7 @@ async function main() {
     ],
   });
 
-  if (result.success) {
+  if (result.success && result.order) {
     console.log('Order created successfully!');
     console.log('Order ID:', result.order.id);
     console.log('Total:', result.order.total);
