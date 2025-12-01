@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { getOrders } from '@/actions/admin-order';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -37,7 +38,9 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
             </div>
 
             <div className="space-y-4">
-                <OrdersTableToolbar />
+                <Suspense fallback={<div>Loading toolbar...</div>}>
+                    <OrdersTableToolbar />
+                </Suspense>
 
                 <div className="rounded-md border bg-card">
                     <div className="relative w-full overflow-auto">
@@ -78,10 +81,10 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                                             </td>
                                             <td className="p-4 align-middle">
                                                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${order.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                                                        order.status === 'SHIPPED' ? 'bg-blue-100 text-blue-800' :
-                                                            order.status === 'PAID' ? 'bg-yellow-100 text-yellow-800' :
-                                                                order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-                                                                    'bg-gray-100 text-gray-800'
+                                                    order.status === 'SHIPPED' ? 'bg-blue-100 text-blue-800' :
+                                                        order.status === 'PAID' ? 'bg-yellow-100 text-yellow-800' :
+                                                            order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
+                                                                'bg-gray-100 text-gray-800'
                                                     }`}>
                                                     {order.status}
                                                 </span>
@@ -103,12 +106,14 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                 </div>
 
                 {pagination && (
-                    <OrdersPagination
-                        total={pagination.total}
-                        pages={pagination.pages}
-                        page={pagination.page}
-                        limit={pagination.limit}
-                    />
+                    <Suspense fallback={<div>Loading pagination...</div>}>
+                        <OrdersPagination
+                            total={pagination.total}
+                            pages={pagination.pages}
+                            page={pagination.page}
+                            limit={pagination.limit}
+                        />
+                    </Suspense>
                 )}
             </div>
         </div>

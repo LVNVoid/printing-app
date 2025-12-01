@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { getCategories, getProducts } from './actions';
 import Link from 'next/link';
@@ -36,13 +37,18 @@ const ProductsAdminPage = async ({ searchParams }: ProductsAdminPageProps) => {
         </Button>
       </div>
 
-      <ProductToolbar categories={categories} />
 
-      <ProductTable
-        products={products}
-        totalPages={totalPages}
-        currentPage={currentPage}
-      />
+      <Suspense fallback={<div>Loading toolbar...</div>}>
+        <ProductToolbar categories={categories} />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading table...</div>}>
+        <ProductTable
+          products={products}
+          totalPages={totalPages}
+          currentPage={currentPage}
+        />
+      </Suspense>
     </div>
   );
 };
