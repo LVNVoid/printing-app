@@ -3,7 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { createProduct, updateProduct, getCategories } from '../actions';
+import { createProduct, updateProduct } from '../actions';
+import { getCategories } from '../../categories/actions';
 import { useFormStatus } from 'react-dom';
 import { useState, useEffect } from 'react';
 import { Product, Category, ProductPicture } from '@/app/generated/prisma/client';

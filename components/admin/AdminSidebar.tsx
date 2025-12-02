@@ -22,6 +22,11 @@ const sidebarItems = [
         icon: Package,
     },
     {
+        title: "Categories",
+        href: "/admin/categories",
+        icon: Package,
+    },
+    {
         title: "Orders",
         href: "/admin/orders",
         icon: ShoppingCart,
@@ -38,7 +43,7 @@ const sidebarItems = [
     },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebar({ storeName }: { storeName?: string }) {
     const pathname = usePathname();
     const { sidebarOpen, setSidebarOpen } = useAdminContext();
 
@@ -62,7 +67,7 @@ export function AdminSidebar() {
             >
                 <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-6">
                     <Link href="/admin/dashboard" className="flex items-center gap-2 font-bold text-xl">
-                        <span className="text-primary">Admin</span>Panel
+                        <span className="text-primary">{storeName || 'Admin'}</span>
                     </Link>
                     <Button
                         variant="ghost"

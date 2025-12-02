@@ -17,7 +17,7 @@ export function AdminHeader() {
     const { setSidebarOpen } = useAdminContext();
 
     return (
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6 shadow-sm">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b px-6">
             <Button
                 variant="ghost"
                 size="icon"

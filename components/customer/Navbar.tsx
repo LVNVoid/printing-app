@@ -19,7 +19,7 @@ import {
 
 import { useCart } from '@/components/customer/CartContext';
 
-export function Navbar() {
+export function Navbar({ storeName }: { storeName?: string }) {
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [showSearch, setShowSearch] = useState(false);

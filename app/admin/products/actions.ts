@@ -16,12 +16,6 @@ const productSchema = z.object({
   image: z.any().optional(),
 });
 
-export async function getCategories() {
-  return await prisma.category.findMany({
-    orderBy: { name: 'asc' },
-  });
-}
-
 export async function getProducts({
   query,
   categoryId,
@@ -65,46 +59,6 @@ export async function getProducts({
     currentPage: page,
     totalProducts: total,
   };
-}
-
-const categorySchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-});
-
-export async function createCategory(formData: FormData) {
-  const result = categorySchema.safeParse({
-    name: formData.get('name'),
-  });
-
-  if (!result.success) {
-    return { error: result.error.flatten().fieldErrors };
-  }
-
-  const slug = slugify(result.data.name, { lower: true, strict: true });
-  
-  // Check if slug exists
-  const existingCategory = await prisma.category.findUnique({
-    where: { slug },
-  });
-
-  if (existingCategory) {
-    return { error: { name: ['Category already exists'] } };
-  }
-
-  try {
-    await prisma.category.create({
-      data: {
-        name: result.data.name,
-        slug,
-      },
-    });
-
-    revalidatePath('/admin/products');
-    return { success: true };
-  } catch (error) {
-    console.error('Failed to create category:', error);
-    return { error: { name: ['Failed to create category'] } };
-  }
 }
 
 export async function getProduct(id: string) {

@@ -8,7 +8,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { CreateCategoryDialog } from './create-category-dialog';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -69,7 +68,6 @@ export function ProductToolbar({ categories }: ProductToolbarProps) {
                     </SelectContent>
                 </Select>
             </div>
-            <CreateCategoryDialog />
         </div>
     );
 }

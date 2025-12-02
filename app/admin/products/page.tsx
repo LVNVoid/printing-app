@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import { getCategories, getProducts } from './actions';
+import { getProducts } from './actions';
+import { getCategories } from '../categories/actions';
 import Link from 'next/link';
 import { ProductTable } from './_components/product-table';
 import { ProductToolbar } from './_components/product-toolbar';
