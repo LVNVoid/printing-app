@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cloudinary Next.js E-commerce
+
+A modern e-commerce application built with Next.js 15, Prisma, PostgreSQL, and Cloudinary. This project features a comprehensive admin dashboard for managing products, categories, orders, and store settings, as well as a customer-facing storefront.
+
+## Features
+
+### Admin Dashboard
+-   **Product Management**: Create, read, update, and delete products with image uploads via Cloudinary.
+-   **Category Management**: Organize products into categories with a dedicated management page.
+-   **Order Management**: View and manage customer orders with status updates, filtering, and pagination.
+-   **Banner Management**: Manage promotional banners for the storefront.
+-   **Store Settings**: Configure store details like the store name.
+-   **Authentication**: Secure admin access using NextAuth.js.
+
+### Storefront
+-   **Product Browsing**: Browse products with category filtering and search functionality.
+-   **Product Details**: View detailed product information and images.
+-   **Shopping Cart**: Add products to cart (implementation details may vary).
+-   **User Accounts**: Customer registration and login.
+
+## Tech Stack
+
+-   **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+-   **Database**: [PostgreSQL](https://www.postgresql.org/)
+-   **ORM**: [Prisma](https://www.prisma.io/)
+-   **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+-   **Image Storage**: [Cloudinary](https://cloudinary.com/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **Fonts**: [Inter](https://fonts.google.com/specimen/Inter) (Google Fonts)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   Node.js (v18 or later)
+-   PostgreSQL database
+-   Cloudinary account
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1.  **Clone the repository:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    git clone <repository-url>
+    cd cloudinary-next
+    ```
 
-## Learn More
+2.  **Install dependencies:**
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3.  **Environment Variables:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    Create a `.env` file in the root directory and add the following variables:
 
-## Deploy on Vercel
+    ```env
+    # Database
+    DATABASE_URL="postgresql://user:password@localhost:5432/dbname?schema=public"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    # NextAuth
+    NEXTAUTH_URL="http://localhost:3000"
+    NEXTAUTH_SECRET="your-super-secret-key"
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    # Cloudinary
+    CLOUDINARY_CLOUD_NAME="your-cloud-name"
+    CLOUDINARY_API_KEY="your-api-key"
+    CLOUDINARY_API_SECRET="your-api-secret"
+    ```
+
+4.  **Database Setup:**
+
+    Run Prisma migrations to set up the database schema:
+
+    ```bash
+    npx prisma migrate dev
+    ```
+
+    (Optional) Seed the database with initial data:
+
+    ```bash
+    npm run seed
+    ```
+
+5.  **Run the development server:**
+
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Project Structure
+
+-   `app/`: Next.js App Router directory.
+    -   `admin/`: Admin dashboard routes and components.
+    -   `(auth)/`: Authentication routes (login, register).
+    -   `(customer)/`: Customer-facing storefront routes.
+    -   `api/`: API routes.
+-   `components/`: Reusable UI components.
+-   `lib/`: Utility functions and configurations (Prisma, Cloudinary, Auth).
+-   `prisma/`: Prisma schema and seed scripts.
+
+## Scripts
+
+-   `npm run dev`: Starts the development server.
+-   `npm run build`: Builds the application for production.
+-   `npm start`: Starts the production server.
+-   `npm run lint`: Runs ESLint.
+-   `npm run seed`: Seeds the database.
+
+## License
+
+[MIT](LICENSE)
