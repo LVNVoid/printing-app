@@ -26,7 +26,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased font-sans`}
       >
-        <NextTopLoader />
+        <NextTopLoader showSpinner={false} />
         <SessionProvider>
           <ThemeProvider
             attribute="class"
