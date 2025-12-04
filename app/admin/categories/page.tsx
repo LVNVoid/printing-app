@@ -10,8 +10,8 @@ export default async function CategoriesPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold">Categories</h1>
-                    <p className="text-muted-foreground">Manage your product categories.</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
+                    <p className="text-sm text-muted-foreground mt-1">Manage your product categories.</p>
                 </div>
                 <CategoryDialog />
             </div>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { OrdersTableToolbar } from './_components/orders-table-toolbar';
 import { OrdersPagination } from './_components/orders-pagination';
+import { formatCurrency, formatDate } from '@/lib/utils';
 
 interface OrdersAdminPageProps {
     searchParams: Promise<{
@@ -34,9 +35,11 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Orders</h1>
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+                    <p className="text-sm text-muted-foreground mt-1">Manage your orders</p>
+                </div>
             </div>
-
             <div className="space-y-4">
                 <Suspense fallback={<div>Loading toolbar...</div>}>
                     <OrdersTableToolbar />
@@ -77,7 +80,7 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                                             </td>
                                             <td className="p-4 align-middle">{order._count.items} items</td>
                                             <td className="p-4 align-middle">
-                                                {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total)}
+                                                {formatCurrency(order.total)}
                                             </td>
                                             <td className="p-4 align-middle">
                                                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${order.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
@@ -90,7 +93,7 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                                                 </span>
                                             </td>
                                             <td className="p-4 align-middle text-muted-foreground">
-                                                {new Date(order.createdAt).toLocaleDateString()}
+                                                {formatDate(order.createdAt)}
                                             </td>
                                             <td className="p-4 align-middle text-right">
                                                 <Button variant="ghost" size="sm" asChild>

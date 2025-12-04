@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { OrderStatusUpdater } from './_components/order-status-updater';
+import { formatCurrency } from '@/lib/utils';
 
 interface OrderDetailPageProps {
     params: Promise<{
@@ -71,7 +72,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                             <div className="flex justify-between pt-4 border-t">
                                 <dt className="font-semibold">Total Amount</dt>
                                 <dd className="font-bold text-lg">
-                                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total)}
+                                    {formatCurrency(order.total)}
                                 </dd>
                             </div>
                         </dl>
@@ -87,12 +88,12 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
                                     <div className="space-y-1">
                                         <p className="font-medium">{item.product.name}</p>
                                         <p className="text-sm text-muted-foreground">
-                                            {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)} x {item.quantity}
+                                            {formatCurrency(item.price)} x {item.quantity}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="font-medium">
-                                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price * item.quantity)}
+                                    {formatCurrency(item.price * item.quantity)}
                                 </div>
                             </div>
                         ))}

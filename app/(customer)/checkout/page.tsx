@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { createOrder } from '@/actions/order';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 
 export default function CheckoutPage() {
     const { items, cartTotal, clearCart } = useCart();
@@ -91,17 +92,11 @@ export default function CheckoutPage() {
                                     <h3 className="font-medium">{item.product.name}</h3>
                                     <p className="text-sm text-muted-foreground">
                                         {item.quantity} x{' '}
-                                        {new Intl.NumberFormat('id-ID', {
-                                            style: 'currency',
-                                            currency: 'IDR',
-                                        }).format(item.product.price)}
+                                        {formatCurrency(item.product.price)}
                                     </p>
                                 </div>
                                 <div className="font-bold">
-                                    {new Intl.NumberFormat('id-ID', {
-                                        style: 'currency',
-                                        currency: 'IDR',
-                                    }).format(item.product.price * item.quantity)}
+                                    {formatCurrency(item.product.price * item.quantity)}
                                 </div>
                             </div>
                         ))}
@@ -114,10 +109,7 @@ export default function CheckoutPage() {
                         <div className="flex justify-between items-center mb-6">
                             <span className="text-muted-foreground">Subtotal</span>
                             <span className="text-2xl font-bold">
-                                {new Intl.NumberFormat('id-ID', {
-                                    style: 'currency',
-                                    currency: 'IDR',
-                                }).format(cartTotal)}
+                                {formatCurrency(cartTotal)}
                             </span>
                         </div>
                         <Button

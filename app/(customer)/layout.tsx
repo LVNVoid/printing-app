@@ -2,7 +2,6 @@ import { Navbar } from '@/components/customer/Navbar';
 import { Footer } from '@/components/customer/Footer';
 import { CartProvider } from '@/components/customer/CartContext';
 import { CartSheet } from '@/components/customer/CartSheet';
-import { Toaster } from 'react-hot-toast';
 
 import { getStoreSettings } from '@/app/admin/settings/actions';
 
@@ -21,7 +20,6 @@ export default async function CustomerLayout({
                 <main className="flex-1">{children}</main>
                 <Footer />
                 <CartSheet />
-                <Toaster position="bottom-right" />
             </div>
         </CartProvider>
     );

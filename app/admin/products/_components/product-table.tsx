@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { DeleteProductButton } from './delete-product-button';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 
 interface Product {
     id: string;
@@ -76,7 +77,7 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                                         <td className="p-4 align-middle font-medium">{product.name}</td>
                                         <td className="p-4 align-middle">{product.category?.name || '-'}</td>
                                         <td className="p-4 align-middle">
-                                            {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.price)}
+                                            {formatCurrency(product.price)}
                                         </td>
                                         <td className="p-4 align-middle max-w-xs truncate">{product.description}</td>
                                         <td className="p-4 align-middle text-right">

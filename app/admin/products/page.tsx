@@ -32,7 +32,11 @@ const ProductsAdminPage = async ({ searchParams }: ProductsAdminPageProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Products</h1>
+        <div>
+
+          <h1 className="text-3xl font-bold tracking-tight">Products</h1>
+          <p className="text-sm text-muted-foreground mt-1">Manage your products.</p>
+        </div>
         <Button asChild>
           <Link href="/admin/products/new">Add Product</Link>
         </Button>

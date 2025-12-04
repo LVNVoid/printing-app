@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { AddToCartButton } from '@/components/customer/AddToCartButton';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import Link from 'next/link';
+import { formatCurrency } from '@/lib/utils';
 
 interface ProductPageProps {
     params: Promise<{
@@ -50,7 +53,34 @@ export default async function ProductPage({ params }: ProductPageProps) {
     const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
 
     return (
-        <div className="container py-10">
+        <div className="container space-y-5 py-10">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/">Home</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        {product.category && (
+                            <>
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink asChild>
+                                        <Link href={`/products/?category=${product.category.slug}`}>
+                                            {product.category.name}
+                                        </Link>
+                                    </BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator />
+                            </>
+                        )}
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>{product.name}</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+            </div>
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                 <div className="relative aspect-square bg-secondary/20 rounded-xl overflow-hidden">
                     {product.pictures.length > 0 ? (
@@ -80,10 +110,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </div>
 
                     <div className="text-2xl font-bold text-primary">
-                        {new Intl.NumberFormat('id-ID', {
-                            style: 'currency',
-                            currency: 'IDR',
-                        }).format(product.price)}
+                        {formatCurrency(product.price)}
                     </div>
 
                     <div className="prose max-w-none text-muted-foreground">

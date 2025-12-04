@@ -19,7 +19,7 @@ export async function CategoryList({ activeCategory }: CategoryListProps) {
 
     return (
         <div className="flex flex-wrap gap-2 mb-8">
-            <Link href="/">
+            <Link href="/products">
                 <Button
                     variant={!activeCategory ? "secondary" : "outline"}
                     size="sm"
@@ -29,7 +29,7 @@ export async function CategoryList({ activeCategory }: CategoryListProps) {
                 </Button>
             </Link>
             {categories.map((category) => (
-                <Link key={category.id} href={`/?category=${category.slug}`}>
+                <Link key={category.id} href={`/products?category=${category.slug}`}>
                     <Button
                         variant={activeCategory === category.slug ? "secondary" : "outline"}
                         size="sm"

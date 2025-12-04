@@ -1,44 +1,184 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getDashboardStats } from "./actions";
+import { CreditCard, DollarSign, Package, ShoppingCart, Users, TrendingUp, Clock } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { formatCurrency, formatDate } from "@/lib/utils";
 
-export default function DashboardAdminPage() {
+export default async function DashboardAdminPage() {
+  const stats = await getDashboardStats();
+
+  const getStatusColor = (status: string) => {
+    const colors = {
+      PAID: 'bg-green-100 text-green-800',
+      COMPLETED: 'bg-blue-100 text-blue-800',
+      PENDING: 'bg-yellow-100 text-yellow-800',
+      CANCELLED: 'bg-red-100 text-red-800',
+    };
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+  };
+
+  const statCards = [
+    {
+      title: "Total Revenue",
+      value: formatCurrency(stats.totalRevenue),
+      description: "Lifetime revenue",
+      icon: DollarSign,
+    },
+    {
+      title: "Total Orders",
+      value: stats.totalOrders,
+      description: "Orders placed",
+      icon: ShoppingCart,
+    },
+    {
+      title: "Total Products",
+      value: stats.totalProducts,
+      description: "Active products",
+      icon: Package,
+    },
+    {
+      title: "Total Customers",
+      value: stats.totalCustomers,
+      description: "Registered customers",
+      icon: Users,
+    },
+  ];
+
+  const quickActions = [
+    {
+      href: "/admin/products/new",
+      icon: Package,
+      label: "Add New Product",
+      description: "Create a new product"
+    },
+    {
+      href: "/admin/categories",
+      icon: CreditCard,
+      label: "Manage Categories",
+      description: "Organize product categories"
+    },
+    {
+      href: "/admin/orders",
+      icon: ShoppingCart,
+      label: "View All Orders",
+      description: "Manage all orders"
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">Welcome back! Here's your store overview.</p>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+        {statCards.map((stat, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <CardTitle>{stat.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between overflow-hidden">
+                <div className="flex-1">
+                  <p className="text-2xl font-bold mb-1">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground">{stat.description}</p>
+                </div>
+                <div className="bg-muted p-3 rounded-lg">
+                  <stat.icon className="h-6 w-6 text-muted-foreground" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid gap-4 lg:grid-cols-3 ">
+        {/* Recent Orders - Takes 2 columns */}
+        <Card className="lg:col-span-2">
+          <CardHeader className="border-b">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Recent Orders</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">Latest transactions from customers</p>
+              </div>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/admin/orders">
+                  View All →
+                </Link>
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+          <CardContent className="pt-6">
+            {stats.recentOrders.length === 0 ? (
+              <div className="text-center py-12">
+                <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No orders found.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {stats.recentOrders.map((order) => (
+                  <div
+                    key={order.id}
+                    className="flex items-center p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
+                      {order.user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="ml-4 flex-1 min-w-0">
+                      <p className="text-sm font-semibold truncate">{order.user.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{order.user.email}</p>
+                      <div className="flex items-center mt-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {formatDate(order.createdAt)}
+                      </div>
+                    </div>
+                    <div className="ml-4 text-right flex-shrink-0">
+                      <p className="text-sm font-bold">{formatCurrency(order.total)}</p>
+                      <span className={`inline-flex items-center mt-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusColor(order.status)}`}>
+                        {order.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
+
+        {/* Quick Actions - Takes 1 column */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+          <CardHeader className="border-b">
+            <CardTitle>Quick Actions</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">Manage your store quickly</p>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">+180.1% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">+19% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+573</div>
-            <p className="text-xs text-muted-foreground">+201 since last hour</p>
+          <CardContent className="pt-6 space-y-3">
+            {quickActions.map((action, index) => (
+              <Button
+                key={index}
+                asChild
+                className="w-full justify-start h-auto py-4"
+                variant="outline"
+              >
+                <Link href={action.href}>
+                  <div className="flex items-center w-full">
+                    <div className="bg-muted p-2 rounded-lg mr-3">
+                      <action.icon className="h-5 w-5" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-semibold text-sm">{action.label}</p>
+                      <p className="text-xs text-muted-foreground">{action.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              </Button>
+            ))}
           </CardContent>
         </Card>
       </div>

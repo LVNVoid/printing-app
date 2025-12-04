@@ -3,11 +3,19 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { createProduct, updateProduct } from '../actions';
 import { getCategories } from '../../categories/actions';
 import { useFormStatus } from 'react-dom';
 import { useState, useEffect } from 'react';
 import { Product, Category, ProductPicture } from '@/app/generated/prisma/client';
+
 
 function SubmitButton({ isEditing }: { isEditing: boolean }) {
     const { pending } = useFormStatus();
@@ -59,19 +67,18 @@ export function ProductForm({ product }: { product?: ProductWithPictures | null 
 
             <div className="space-y-2">
                 <Label htmlFor="categoryId">Category</Label>
-                <select
-                    id="categoryId"
-                    name="categoryId"
-                    className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    defaultValue={product?.categoryId || ''}
-                >
-                    <option value="">Select a category</option>
-                    {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                            {category.name}
-                        </option>
-                    ))}
-                </select>
+                <Select name="categoryId" defaultValue={product?.categoryId || undefined}>
+                    <SelectTrigger id="categoryId">
+                        <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                                {category.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="space-y-2">

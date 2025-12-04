@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { SearchInput } from './SearchInput';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Menu, Printer, Search, ShoppingCart, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -25,6 +26,8 @@ export function Navbar({ storeName }: { storeName?: string }) {
     const [showSearch, setShowSearch] = useState(false);
     const { data: session } = useSession();
     const { cartCount, setIsOpen: setCartOpen, clearCart } = useCart();
+    const pathname = usePathname();
+
 
     const handleLogout = () => {
         clearCart();
@@ -36,8 +39,8 @@ export function Navbar({ storeName }: { storeName?: string }) {
     }, []);
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-50 w-full bg-background/95 border-b backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
                 <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group shrink-0">
@@ -47,21 +50,35 @@ export function Navbar({ storeName }: { storeName?: string }) {
                         <span className="text-base sm:text-xl font-bold tracking-tight hidden xs:inline">
                             PrintMaster
                         </span>
-                        <span className="text-base sm:text-xl font-bold tracking-tight xs:hidden">
-                            PM
-                        </span>
                     </Link>
 
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center gap-6 mx-6">
+                        <Link
+                            href="/"
+                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
+                        >
+                            Home
+                        </Link>
+                        <Link
+                            href="/products"
+                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/products') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
+                        >
+                            Products
+                        </Link>
+                        {session && (
+                            <Link
+                                href="/orders"
+                                className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/orders') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
+                            >
+                                My Orders
+                            </Link>
+                        )}
+                    </nav>
+
                     {/* Desktop Search Bar */}
-                    <div className="flex-1 max-w-xl mx-auto hidden lg:block">
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                type="search"
-                                placeholder="Search for products..."
-                                className="w-full bg-secondary/50 pl-9 focus-visible:bg-background"
-                            />
-                        </div>
+                    <div className="flex-1 max-w-md mx-auto hidden lg:block">
+                        <SearchInput />
                     </div>
 
                     {/* Actions */}
@@ -173,14 +190,14 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                             <Link
                                                 href="/"
                                                 onClick={() => setIsOpen(false)}
-                                                className="text-base font-medium hover:text-primary transition-colors py-2"
+                                                className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname === '/' ? 'text-primary' : 'text-muted-foreground'}`}
                                             >
                                                 Home
                                             </Link>
                                             <Link
                                                 href="/products"
                                                 onClick={() => setIsOpen(false)}
-                                                className="text-base font-medium hover:text-primary transition-colors py-2"
+                                                className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname?.startsWith('/products') ? 'text-primary' : 'text-muted-foreground'}`}
                                             >
                                                 Products
                                             </Link>
@@ -190,7 +207,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                         <Link
                                                             href="/admin/dashboard"
                                                             onClick={() => setIsOpen(false)}
-                                                            className="text-base font-medium hover:text-primary transition-colors py-2"
+                                                            className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname?.startsWith('/admin') ? 'text-primary' : 'text-muted-foreground'}`}
                                                         >
                                                             Admin Dashboard
                                                         </Link>
@@ -198,7 +215,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                     <Link
                                                         href="/orders"
                                                         onClick={() => setIsOpen(false)}
-                                                        className="text-base font-medium hover:text-primary transition-colors py-2"
+                                                        className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname?.startsWith('/orders') ? 'text-primary' : 'text-muted-foreground'}`}
                                                     >
                                                         My Orders
                                                     </Link>
@@ -250,15 +267,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                 {/* Mobile Search Bar (Collapsible) */}
                 {showSearch && (
                     <div className="lg:hidden pb-3 pt-2 animate-in slide-in-from-top-2">
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                type="search"
-                                placeholder="Search products..."
-                                className="w-full pl-9 bg-secondary/50 focus-visible:bg-background"
-                                autoFocus
-                            />
-                        </div>
+                        <SearchInput autoFocus />
                     </div>
                 )}
             </div>

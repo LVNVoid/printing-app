@@ -11,6 +11,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { formatCurrency, formatDate } from '@/lib/utils';
 
 export default async function OrdersPage() {
     const session = await getServerSession(authOptions);
@@ -55,17 +56,14 @@ export default async function OrdersPage() {
                             {orders.map((order) => (
                                 <TableRow key={order.id}>
                                     <TableCell className="font-medium">{order.id.slice(0, 8)}...</TableCell>
-                                    <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                                    <TableCell>{formatDate(order.createdAt)}</TableCell>
                                     <TableCell>
                                         <Badge variant={order.status === 'COMPLETED' ? 'default' : 'secondary'}>
                                             {order.status}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>
-                                        {new Intl.NumberFormat('id-ID', {
-                                            style: 'currency',
-                                            currency: 'IDR',
-                                        }).format(order.total)}
+                                        {formatCurrency(order.total)}
                                     </TableCell>
                                     <TableCell>
                                         {order.items.length} item(s)
