@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { SearchInput } from './SearchInput';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Menu, Printer, Search, ShoppingCart, User } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useSession, signOut } from 'next-auth/react';
 import {
@@ -78,7 +78,9 @@ export function Navbar({ storeName }: { storeName?: string }) {
 
                     {/* Desktop Search Bar */}
                     <div className="flex-1 max-w-md mx-auto hidden lg:block">
-                        <SearchInput />
+                        <Suspense fallback={<div className="w-full h-10 bg-muted animate-pulse rounded-md" />}>
+                            <SearchInput />
+                        </Suspense>
                     </div>
 
                     {/* Actions */}
@@ -267,7 +269,9 @@ export function Navbar({ storeName }: { storeName?: string }) {
                 {/* Mobile Search Bar (Collapsible) */}
                 {showSearch && (
                     <div className="lg:hidden pb-3 pt-2 animate-in slide-in-from-top-2">
-                        <SearchInput autoFocus />
+                        <Suspense fallback={null}>
+                            <SearchInput autoFocus />
+                        </Suspense>
                     </div>
                 )}
             </div>
