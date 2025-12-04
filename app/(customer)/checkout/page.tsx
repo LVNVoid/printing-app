@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { useCart } from '@/components/customer/CartContext';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
@@ -11,7 +13,7 @@ import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
-export default function CheckoutPage() {
+function CheckoutContent() {
     const { items, cartTotal, clearCart } = useCart();
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -131,5 +133,13 @@ export default function CheckoutPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function CheckoutPage() {
+    return (
+        <Suspense fallback={<div className="container py-10 flex justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>}>
+            <CheckoutContent />
+        </Suspense>
     );
 }
