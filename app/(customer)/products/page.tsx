@@ -11,6 +11,8 @@ interface ProductsPageProps {
     searchParams: SearchParams
 }
 
+import { getCachedCategory, getCachedStoreSettings } from '@/lib/data';
+
 export async function generateMetadata(props: ProductsPageProps): Promise<Metadata> {
     const searchParams = await props.searchParams;
     const categorySlug = typeof searchParams.category === 'string' ? searchParams.category : undefined;
@@ -18,17 +20,8 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
     const search = typeof searchParams.search === 'string' ? searchParams.search : undefined;
 
     const [category, storeSettings] = await Promise.all([
-        categorySlug ? prisma.category.findUnique({
-            where: { slug: categorySlug },
-            select: {
-                id: true,
-                name: true,
-                slug: true,
-            }
-        }) : Promise.resolve(null),
-        prisma.storeSettings.findFirst({
-            select: { storeName: true }
-        })
+        categorySlug ? getCachedCategory(categorySlug) : Promise.resolve(null),
+        getCachedStoreSettings()
     ]);
 
     const storeName = storeSettings?.storeName || 'Foman Percetakan';

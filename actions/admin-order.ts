@@ -31,7 +31,11 @@ export async function getOrders({ query, status, page = 1, limit = 10 }: GetOrde
     const [orders, total] = await Promise.all([
       prisma.order.findMany({
         where,
-        include: {
+        select: {
+          id: true,
+          status: true,
+          total: true,
+          createdAt: true,
           user: {
             select: {
               name: true,

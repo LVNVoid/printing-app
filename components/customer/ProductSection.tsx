@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { ProductCard } from './ProductCard';
+import { getCachedCategory } from '@/lib/data';
 import {
     Pagination,
     PaginationContent,
@@ -84,17 +85,7 @@ const getCachedProducts = unstable_cache(
     }
 );
 
-// ✅ Separate cache for category to avoid refetch
-const getCachedCategory = unstable_cache(
-    async (slug: string) => {
-        return prisma.category.findUnique({
-            where: { slug },
-            select: { name: true }
-        });
-    },
-    ['category-detail'],
-    { revalidate: 3600, tags: ['categories'] }
-);
+
 
 export async function ProductSection({ categorySlug, page = 1, search }: ProductSectionProps) {
     // ✅ Parallel fetch dengan conditional query
