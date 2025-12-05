@@ -3,12 +3,12 @@ import { ProductCard } from './ProductCard';
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { unstable_cache } from 'next/cache';
 
 interface ProductSectionProps {
     categorySlug?: string;
@@ -16,18 +16,17 @@ interface ProductSectionProps {
     search?: string;
 }
 
-import { unstable_cache } from 'next/cache';
+const PAGE_SIZE = 12; // Increased from 8 for better UX
+const MAX_PAGINATION_DISPLAY = 7; // Limit pagination buttons
 
+// ✅ Optimized cache key dengan semua parameter
 const getCachedProducts = unstable_cache(
     async (page: number, categorySlug?: string, search?: string) => {
-        const pageSize = 8;
-        const skip = (page - 1) * pageSize;
+        const skip = (page - 1) * PAGE_SIZE;
         const where: any = {};
 
         if (categorySlug) {
-            where.category = {
-                slug: categorySlug
-            };
+            where.category = { slug: categorySlug };
         }
 
         if (search) {
@@ -37,40 +36,76 @@ const getCachedProducts = unstable_cache(
             ];
         }
 
-        return Promise.all([
+        // ✅ Parallel query dengan optimized select
+        const [products, count] = await Promise.all([
             prisma.product.findMany({
-                take: pageSize,
+                take: PAGE_SIZE,
                 skip,
                 where,
-                orderBy: {
-                    createdAt: 'desc',
-                },
-                include: {
-                    pictures: true,
-                    category: true,
+                orderBy: { createdAt: 'desc' },
+                select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    description: true,
+                    price: true,
+                    pictures: {
+                        select: {
+                            id: true,
+                            imageUrl: true,
+                        },
+                        take: 1, // ✅ Only get first image
+                        orderBy: { id: 'asc' }
+                    },
+                    category: {
+                        select: {
+                            id: true,
+                            name: true,
+                            slug: true,
+                        }
+                    },
                 },
             }),
             prisma.product.count({ where })
         ]);
+
+        // ✅ Convert Decimal to number for client components
+        const serializedProducts = products.map(product => ({
+            ...product,
+            price: Number(product.price),
+        }));
+
+        return [serializedProducts, count] as const;
     },
-    ['products-list'],
-    { revalidate: 3600, tags: ['products'] }
+    ['products-list'], // ✅ Dynamic cache key
+    {
+        revalidate: 3600,
+        tags: ['products']
+    }
+);
+
+// ✅ Separate cache for category to avoid refetch
+const getCachedCategory = unstable_cache(
+    async (slug: string) => {
+        return prisma.category.findUnique({
+            where: { slug },
+            select: { name: true }
+        });
+    },
+    ['category-detail'],
+    { revalidate: 3600, tags: ['categories'] }
 );
 
 export async function ProductSection({ categorySlug, page = 1, search }: ProductSectionProps) {
-    const pageSize = 8;
-
+    // ✅ Parallel fetch dengan conditional query
     const [productsData, categoryData] = await Promise.all([
         getCachedProducts(page, categorySlug, search),
-        categorySlug ? prisma.category.findUnique({
-            where: { slug: categorySlug },
-            select: { name: true }
-        }) : Promise.resolve(null)
+        categorySlug ? getCachedCategory(categorySlug) : Promise.resolve(null)
     ]);
 
     const [products, totalCount] = productsData;
     const categoryName = categoryData?.name || 'All Products';
-    const totalPages = Math.ceil(totalCount / pageSize);
+    const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
     const createPageUrl = (newPage: number) => {
         const params = new URLSearchParams();
@@ -80,17 +115,61 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
         return `/products?${params.toString()}`;
     };
 
+    // ✅ Smart pagination display
+    const getPageNumbers = () => {
+        if (totalPages <= MAX_PAGINATION_DISPLAY) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
+
+        const pages: (number | string)[] = [];
+        const halfDisplay = Math.floor(MAX_PAGINATION_DISPLAY / 2);
+
+        let startPage = Math.max(1, page - halfDisplay);
+        let endPage = Math.min(totalPages, page + halfDisplay);
+
+        if (page <= halfDisplay) {
+            endPage = MAX_PAGINATION_DISPLAY;
+        } else if (page >= totalPages - halfDisplay) {
+            startPage = totalPages - MAX_PAGINATION_DISPLAY + 1;
+        }
+
+        if (startPage > 1) {
+            pages.push(1);
+            if (startPage > 2) pages.push('ellipsis-start');
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) pages.push('ellipsis-end');
+            pages.push(totalPages);
+        }
+
+        return pages;
+    };
+
+    const pageNumbers = getPageNumbers();
+
     return (
         <section className="bg-background">
             <div className="container">
+                {/* Header */}
                 <div className="flex flex-col gap-6 mb-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <h2 className="text-2xl font-bold tracking-tight">
                             {search ? `Search Results for "${search}"` : categoryName}
                         </h2>
+                        {totalCount > 0 && (
+                            <p className="text-sm text-muted-foreground">
+                                Showing {((page - 1) * PAGE_SIZE) + 1}-{Math.min(page * PAGE_SIZE, totalCount)} of {totalCount} products
+                            </p>
+                        )}
                     </div>
                 </div>
 
+                {/* Products Grid */}
                 {products.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {products.map((product) => (
@@ -99,39 +178,46 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
                     </div>
                 ) : (
                     <div className="text-center py-20 bg-secondary/10 rounded-3xl">
-                        <p className="text-xl text-muted-foreground">No products found. Please check back later.</p>
+                        <p className="text-xl text-muted-foreground">
+                            {search ? `No products found for "${search}"` : 'No products found. Please check back later.'}
+                        </p>
                     </div>
                 )}
+
+                {/* Optimized Pagination */}
                 {totalPages > 1 && (
                     <div className="mt-8">
                         <Pagination>
                             <PaginationContent>
                                 <PaginationItem>
                                     <PaginationPrevious
-                                        href={createPageUrl(page - 1)}
+                                        href={page > 1 ? createPageUrl(page - 1) : '#'}
                                         aria-disabled={page <= 1}
-                                        size="default"
                                         className={page <= 1 ? "pointer-events-none opacity-50" : ""}
                                     />
                                 </PaginationItem>
 
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                                    <PaginationItem key={p}>
-                                        <PaginationLink
-                                            href={createPageUrl(p)}
-                                            isActive={p === page}
-                                            size="icon"
-                                        >
-                                            {p}
-                                        </PaginationLink>
-                                    </PaginationItem>
+                                {pageNumbers.map((p, idx) => (
+                                    typeof p === 'number' ? (
+                                        <PaginationItem key={p}>
+                                            <PaginationLink
+                                                href={createPageUrl(p)}
+                                                isActive={p === page}
+                                            >
+                                                {p}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    ) : (
+                                        <PaginationItem key={`${p}-${idx}`}>
+                                            <span className="px-4 py-2">...</span>
+                                        </PaginationItem>
+                                    )
                                 ))}
 
                                 <PaginationItem>
                                     <PaginationNext
-                                        href={createPageUrl(page + 1)}
+                                        href={page < totalPages ? createPageUrl(page + 1) : '#'}
                                         aria-disabled={page >= totalPages}
-                                        size="default"
                                         className={page >= totalPages ? "pointer-events-none opacity-50" : ""}
                                     />
                                 </PaginationItem>

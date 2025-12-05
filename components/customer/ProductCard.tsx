@@ -4,67 +4,95 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Product, ProductPicture } from '@/app/generated/prisma/client';
-import { useState } from 'react';
+import { memo, useState, useCallback, useMemo, useTransition } from 'react';
 import { useCart } from './CartContext';
-
-interface ProductWithPictures extends Product {
-    pictures: ProductPicture[];
-}
+import { formatCurrency } from '@/lib/utils';
+import { CartProduct, ProductListItem } from '@/types/product';
 
 interface ProductCardProps {
-    product: ProductWithPictures;
+    product: ProductListItem;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-    const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
+function toCartProduct(product: ProductListItem): CartProduct {
+    return {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        description: product.description,
+        pictures: product.pictures,
+    };
+}
+
+export const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
     const { addItem } = useCart();
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [isAdding, setIsAdding] = useState(false);
+    const [isPending, startTransition] = useTransition();
 
-    const handleAddToCart = async (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsAdding(true);
-        await addItem(product);
-        setTimeout(() => setIsAdding(false), 600);
-    };
+    const primaryImage = useMemo(
+        () => product.pictures[0]?.imageUrl || '/images/placeholder-image.png',
+        [product.pictures]
+    );
 
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        }).format(price);
-    };
+    const formattedPrice = useMemo(
+        () => formatCurrency(product.price),
+        [product.price]
+    );
+
+    const handleAddToCart = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (isPending) return;
+
+            startTransition(() => {
+                addItem(toCartProduct(product));
+            });
+        },
+        [addItem, product, isPending]
+    );
+
+    const handleImageLoad = useCallback(() => {
+        setImageLoaded(true);
+    }, []);
+
+    const hasImages = product.pictures.length > 0;
 
     return (
-        <div className="group relative h-full overflow-hidden rounded-lg border bg-card shadow-sm hover:shadow-xl dark:hover:shadow-2xl transition-all duration-500">
-
+        <div className="group relative h-full overflow-hidden rounded-lg border bg-card shadow-sm hover:shadow-xl transition-shadow duration-300">
             {/* IMAGE */}
-            <Link href={`/products/${product.slug}`} className="block">
-                <div className="relative w-full overflow-hidden bg-muted rounded-t-lg aspect-square m-0 p-0">
-                    {product.pictures.length > 0 ? (
+            <Link
+                href={`/products/${product.slug}`}
+                className="block"
+                prefetch={false}
+                aria-label={`View ${product.name}`}
+            >
+                <div className="relative w-full overflow-hidden bg-muted rounded-t-lg aspect-square">
+                    {hasImages ? (
                         <>
                             <Image
                                 src={primaryImage}
                                 alt={product.name}
                                 fill
-                                className={`object-cover transition-all duration-700 ease-out ${imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+                                className={`object-cover transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'
                                     } group-hover:scale-105`}
-                                sizes="100vw"
-                                onLoad={() => setImageLoaded(true)}
+                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                onLoad={handleImageLoad}
+                                loading="lazy"
+                                quality={75}
+                                placeholder="blur"
+                                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
                             />
 
                             {!imageLoaded && (
-                                <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="absolute inset-0 flex items-center justify-center bg-muted">
                                     <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
                                 </div>
                             )}
                         </>
                     ) : (
-                        <div className="flex h-full w-full items-center justify-center">
+                        <div className="flex h-full w-full items-center justify-center bg-muted">
                             <Eye className="h-10 w-10 text-muted-foreground/30" />
                         </div>
                     )}
@@ -87,16 +115,18 @@ export function ProductCard({ product }: ProductCardProps) {
                     <div className="flex-1">
                         <p className="text-xs text-muted-foreground mb-0.5">Price</p>
                         <p className="text-lg font-bold text-foreground">
-                            {formatPrice(product.price)}
+                            {formattedPrice}
                         </p>
                     </div>
 
                     <Button
                         size="sm"
-                        className="h-10 px-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+                        className="h-10 px-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
                         onClick={handleAddToCart}
+                        disabled={isPending}
+                        aria-label={`Add ${product.name} to cart`}
                     >
-                        {isAdding ? (
+                        {isPending ? (
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
                         ) : (
                             <ShoppingCart className="h-4 w-4" />
@@ -106,4 +136,9 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
         </div>
     );
-}
+}, (prevProps, nextProps) => {
+    // ✅ Custom comparison untuk memo
+    return prevProps.product.id === nextProps.product.id &&
+        prevProps.product.price === nextProps.product.price &&
+        prevProps.product.name === nextProps.product.name;
+});
