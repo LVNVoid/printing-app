@@ -25,12 +25,14 @@ export async function createUser(
   const name = formData.get('name');
   const email = formData.get('email');
   const password = formData.get('password');
+  const phoneNumber = formData.get('phoneNumber');
   const file = formData.get('image') as File | null;
 
   const parsed = UserSchema.safeParse({
     name,
     email,
     password,
+    phoneNumber,
     image: file ?? undefined,
   });
 
@@ -81,6 +83,7 @@ export async function createUser(
       name: data.name,
       email: data.email,
       password: hashedPassword,
+      phoneNumber: data.phoneNumber,
       profileUrl: imageUrl,
       profilePublicId: imagePublicId,
     },
@@ -113,12 +116,14 @@ export async function updateUser(prevState: FormState, formData: FormData) {
   const name = formData.get('name');
   const email = formData.get('email');
   const password = formData.get('password');
+  const phoneNumber = formData.get('phoneNumber');
   const file = formData.get('image') as File | null;
 
   const parsed = UserSchema.safeParse({
     name,
     email,
     password,
+    phoneNumber,
     image: file ?? undefined,
   });
 
@@ -168,6 +173,7 @@ export async function updateUser(prevState: FormState, formData: FormData) {
       name: data.name,
       email: data.email,
       password: data.password,
+      phoneNumber: data.phoneNumber,
       profileUrl: imageUrl,
       profilePublicId: imagePublicId,
     },
