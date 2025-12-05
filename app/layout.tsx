@@ -4,6 +4,7 @@ import { SessionProvider } from './providers/session-provider';
 import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from 'react-hot-toast';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Metadata } from 'next';
 
 const inter = Inter({
@@ -94,6 +95,7 @@ export default function RootLayout({
         className={`${inter.variable} antialiased font-sans`}
       >
         <NextTopLoader showSpinner={false} />
+        <SpeedInsights />
         <SessionProvider>
           <ThemeProvider
             attribute="class"
