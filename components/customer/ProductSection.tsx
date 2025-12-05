@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma';
 import { ProductCard } from './ProductCard';
-import { CategoryList } from './CategoryList';
 import {
     Pagination,
     PaginationContent,
@@ -36,22 +35,30 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
         ];
     }
 
-    const [products, totalCount] = await Promise.all([
-        prisma.product.findMany({
-            take: pageSize,
-            skip,
-            where,
-            orderBy: {
-                createdAt: 'desc',
-            },
-            include: {
-                pictures: true,
-                category: true,
-            },
-        }),
-        prisma.product.count({ where })
+    const [productsData, categoryData] = await Promise.all([
+        Promise.all([
+            prisma.product.findMany({
+                take: pageSize,
+                skip,
+                where,
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                include: {
+                    pictures: true,
+                    category: true,
+                },
+            }),
+            prisma.product.count({ where })
+        ]),
+        categorySlug ? prisma.category.findUnique({
+            where: { slug: categorySlug },
+            select: { name: true }
+        }) : Promise.resolve(null)
     ]);
 
+    const [products, totalCount] = productsData;
+    const categoryName = categoryData?.name || 'All Products';
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const createPageUrl = (newPage: number) => {
@@ -62,17 +69,6 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
         return `/products?${params.toString()}`;
     };
 
-    let categoryName = 'All Products';
-    if (categorySlug) {
-        const category = await prisma.category.findUnique({
-            where: { slug: categorySlug },
-            select: { name: true }
-        });
-        if (category) {
-            categoryName = category.name;
-        }
-    }
-
     return (
         <section className="bg-background">
             <div className="container">
@@ -82,7 +78,6 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
                             {search ? `Search Results for "${search}"` : categoryName}
                         </h2>
                     </div>
-                    <CategoryList activeCategory={categorySlug} />
                 </div>
 
                 {products.length > 0 ? (

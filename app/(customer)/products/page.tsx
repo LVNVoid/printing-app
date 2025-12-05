@@ -1,6 +1,9 @@
 import { ProductSection } from '@/components/customer/ProductSection';
+import { CategoryList } from '@/components/customer/CategoryList';
+import { ProductSkeleton } from '@/components/skeletons/ProductSkeleton';
 import prisma from '@/lib/prisma';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
@@ -14,21 +17,20 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
     const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page) : 1;
     const search = typeof searchParams.search === 'string' ? searchParams.search : undefined;
 
-    let category = null;
-    if (categorySlug) {
-        category = await prisma.category.findUnique({
+    const [category, storeSettings] = await Promise.all([
+        categorySlug ? prisma.category.findUnique({
             where: { slug: categorySlug },
             select: {
                 id: true,
                 name: true,
                 slug: true,
             }
-        });
-    }
+        }) : Promise.resolve(null),
+        prisma.storeSettings.findFirst({
+            select: { storeName: true }
+        })
+    ]);
 
-    const storeSettings = await prisma.storeSettings.findFirst({
-        select: { storeName: true }
-    });
     const storeName = storeSettings?.storeName || 'Foman Percetakan';
 
     const baseUrl = 'https://foman.co.id/products';
@@ -140,7 +142,12 @@ export default async function ProductsPage(props: ProductsPageProps) {
 
     return (
         <div className="py-8">
-            <ProductSection categorySlug={category} page={page} search={search} />
+            <div className="container">
+                <CategoryList activeCategory={category} />
+                <Suspense fallback={<ProductSkeleton />}>
+                    <ProductSection categorySlug={category} page={page} search={search} />
+                </Suspense>
+            </div>
         </div>
     );
 }
