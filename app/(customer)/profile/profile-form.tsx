@@ -92,7 +92,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     };
 
     return (
-        <Card className="w-full max-w-2xl mx-auto">
+        <Card className="w-full max-w-2xl mx-auto bg-background ">
             <CardHeader>
                 <CardTitle>Profile Settings</CardTitle>
                 <CardDescription>

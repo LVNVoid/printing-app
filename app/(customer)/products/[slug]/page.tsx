@@ -34,29 +34,22 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
     const productUrl = `https://foman.co.id/products/${slug}`;
 
-    const priceValue = product.price.toString();
-
     const seoDescription = product.description
         ? `${product.description.substring(0, 150)}${product.description.length > 150 ? '...' : ''}`
-        : `Pesan ${product.name} berkualitas tinggi dari Foman Percetakan. Harga ${formatCurrency(product.price)}. Layanan profesional dan hasil memuaskan.`;
+        : `Pesan ${product.name} berkualitas tinggi dari Foman Percetakan. Harga ${formatCurrency(product.price)}.`;
 
     const keywords = [
         product.name,
         `cetak ${product.name}`,
         `jasa ${product.name}`,
         product.category?.name || 'percetakan',
-        'Foman',
-        'percetakan',
-        'printing',
-        'cetak online',
-        'cetak murah',
-        'cetak berkualitas'
+        'Foman', 'percetakan', 'printing', 'cetak online', 'cetak murah', 'cetak berkualitas'
     ];
 
     return {
         title: `${product.name} - ${formatCurrency(product.price)}`,
         description: seoDescription,
-        keywords: keywords,
+        keywords,
 
         openGraph: {
             title: `${product.name} | Foman Percetakan`,
@@ -72,15 +65,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
                     height: 1200,
                     alt: product.name,
                 },
-                ...(product.pictures
-                    .slice(1, 4)
-                    .filter((pic) => pic.imageUrl)
-                    .map((pic) => ({
-                        url: pic.imageUrl!,
-                        width: 800,
-                        height: 800,
-                        alt: `${product.name} - Gambar tambahan`,
-                    }))),
+                ...product.pictures.slice(1, 4).map((pic) => ({
+                    url: pic.imageUrl!,
+                    width: 800,
+                    height: 800,
+                    alt: `${product.name} - Gambar tambahan`,
+                }))
             ],
         },
 
@@ -92,9 +82,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
             creator: '@fomanpercetakan',
         },
 
-        alternates: {
-            canonical: productUrl,
-        },
+        alternates: { canonical: productUrl },
 
         robots: {
             index: true,
@@ -104,26 +92,26 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
         },
 
         category: product.category?.name || 'Percetakan',
-
     };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
     const { slug } = await params;
+
     const product = await prisma.product.findUnique({
         where: { slug },
         include: { pictures: true, category: true },
     });
 
-    if (!product) {
-        notFound();
-    }
+    if (!product) notFound();
 
     const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
 
     return (
-        <div className="container space-y-5 py-10">
-            <div>
+        <div className="container space-y-6 px-4 py-10 md:space-y-8">
+
+            {/* Breadcrumb */}
+            <div className="text-xs sm:text-sm md:text-base">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -132,6 +120,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
+
                         {product.category && (
                             <>
                                 <BreadcrumbItem>
@@ -144,51 +133,60 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                 <BreadcrumbSeparator />
                             </>
                         )}
+
                         <BreadcrumbItem>
                             <BreadcrumbPage>{product.name}</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+
+            {/* Main Layout: Image + Content */}
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+
+                {/* Product Image */}
                 <div className="relative aspect-square bg-secondary/20 rounded-xl overflow-hidden">
-                    {product.pictures.length > 0 ? (
-                        <Image
-                            src={primaryImage}
-                            alt={product.name}
-                            fill
-                            className="object-cover"
-                            priority
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                    ) : (
-                        <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                            No Image
-                        </div>
-                    )}
+                    <Image
+                        src={primaryImage}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                 </div>
 
-                <div className="flex flex-col gap-6">
+                {/* Product Info */}
+                <div className="flex flex-col gap-6 md:gap-8">
+
+                    {/* Category + Title */}
                     <div>
                         {product.category && (
-                            <div className="text-sm text-muted-foreground mb-2">
+                            <div className="text-sm sm:text-base text-muted-foreground mb-1">
                                 {product.category.name}
                             </div>
                         )}
-                        <h1 className="text-3xl md:text-4xl font-bold">{product.name}</h1>
+
+                        <h1 className="font-bold text-[clamp(1.6rem,4vw,3rem)] leading-tight">
+                            {product.name}
+                        </h1>
                     </div>
 
-                    <div className="text-2xl font-bold text-primary">
+                    {/* Price */}
+                    <div className="font-bold text-primary text-xl sm:text-2xl md:text-3xl">
                         {formatCurrency(product.price)}
                     </div>
 
-                    <div className="prose max-w-none text-muted-foreground">
+                    {/* Description */}
+                    <div className="prose prose-sm sm:prose-base md:prose-lg max-w-none text-muted-foreground">
                         <p>{product.description}</p>
                     </div>
 
-                    <div className="mt-auto pt-6">
+                    {/* Add to Cart */}
+                    <div className="mt-auto pt-4">
                         <AddToCartButton product={product} />
                     </div>
+
                 </div>
             </div>
         </div>

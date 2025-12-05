@@ -17,10 +17,9 @@ interface ProductSectionProps {
     search?: string;
 }
 
-const PAGE_SIZE = 12; // Increased from 8 for better UX
-const MAX_PAGINATION_DISPLAY = 7; // Limit pagination buttons
+const PAGE_SIZE = 12;
+const MAX_PAGINATION_DISPLAY = 7;
 
-// ✅ Optimized cache key dengan semua parameter
 const getCachedProducts = unstable_cache(
     async (page: number, categorySlug?: string, search?: string) => {
         const skip = (page - 1) * PAGE_SIZE;
@@ -37,7 +36,6 @@ const getCachedProducts = unstable_cache(
             ];
         }
 
-        // ✅ Parallel query dengan optimized select
         const [products, count] = await Promise.all([
             prisma.product.findMany({
                 take: PAGE_SIZE,
@@ -55,7 +53,7 @@ const getCachedProducts = unstable_cache(
                             id: true,
                             imageUrl: true,
                         },
-                        take: 1, // ✅ Only get first image
+                        take: 1,
                         orderBy: { id: 'asc' }
                     },
                     category: {
@@ -70,7 +68,6 @@ const getCachedProducts = unstable_cache(
             prisma.product.count({ where })
         ]);
 
-        // ✅ Convert Decimal to number for client components
         const serializedProducts = products.map(product => ({
             ...product,
             price: Number(product.price),
@@ -78,7 +75,7 @@ const getCachedProducts = unstable_cache(
 
         return [serializedProducts, count] as const;
     },
-    ['products-list'], // ✅ Dynamic cache key
+    ['products-list'],
     {
         revalidate: 3600,
         tags: ['products']
@@ -88,7 +85,6 @@ const getCachedProducts = unstable_cache(
 
 
 export async function ProductSection({ categorySlug, page = 1, search }: ProductSectionProps) {
-    // ✅ Parallel fetch dengan conditional query
     const [productsData, categoryData] = await Promise.all([
         getCachedProducts(page, categorySlug, search),
         categorySlug ? getCachedCategory(categorySlug) : Promise.resolve(null)
@@ -106,7 +102,6 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
         return `/products?${params.toString()}`;
     };
 
-    // ✅ Smart pagination display
     const getPageNumbers = () => {
         if (totalPages <= MAX_PAGINATION_DISPLAY) {
             return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -144,9 +139,8 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
     const pageNumbers = getPageNumbers();
 
     return (
-        <section className="bg-background">
+        <section>
             <div className="container">
-                {/* Header */}
                 <div className="flex flex-col gap-6 mb-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <h2 className="text-2xl font-bold tracking-tight">

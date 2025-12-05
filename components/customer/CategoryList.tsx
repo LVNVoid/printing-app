@@ -23,7 +23,7 @@ export async function CategoryList({ activeCategory }: CategoryListProps) {
                 <Button
                     variant={!activeCategory ? "secondary" : "outline"}
                     size="sm"
-                    className="rounded-full"
+                    className="rounded-full cursor-pointer"
                 >
                     All
                 </Button>
@@ -33,7 +33,7 @@ export async function CategoryList({ activeCategory }: CategoryListProps) {
                     <Button
                         variant={activeCategory === category.slug ? "secondary" : "outline"}
                         size="sm"
-                        className="rounded-full"
+                        className="rounded-full cursor-pointer"
                     >
                         {category.name}
                     </Button>

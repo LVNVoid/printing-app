@@ -3,7 +3,7 @@ import { Printer, Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'luci
 
 export function Footer() {
     return (
-        <footer className="w-full border-t bg-background/50 backdrop-blur-sm">
+        <footer className="w-full border-t bg-background/50 backdrop-blur-sm px-5">
             <div className="container py-12 md:py-20">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <div className="space-y-6">
@@ -20,12 +20,12 @@ export function Footer() {
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4">Services</h3>
+                        <h3 className="font-semibold mb-4">Products</h3>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li><Link href="/services/business-cards" className="hover:text-primary">Business Cards</Link></li>
-                            <li><Link href="/services/flyers" className="hover:text-primary">Flyers & Brochures</Link></li>
-                            <li><Link href="/services/banners" className="hover:text-primary">Banners & Signs</Link></li>
-                            <li><Link href="/services/stickers" className="hover:text-primary">Stickers & Labels</Link></li>
+                            <li><Link href="/products?category=brosur" className="hover:text-primary">Brosur</Link></li>
+                            <li><Link href="/products?category=kalender" className="hover:text-primary">Kalender</Link></li>
+                            <li><Link href="/products?category=kartu-nama" className="hover:text-primary">Kartu Nama</Link></li>
+                            <li><Link href="/products?category=undangan" className="hover:text-primary">Undangan</Link></li>
                         </ul>
                     </div>
 
@@ -34,8 +34,6 @@ export function Footer() {
                         <ul className="space-y-2 text-sm text-muted-foreground">
                             <li><Link href="/about" className="hover:text-primary">About Us</Link></li>
                             <li><Link href="/contact" className="hover:text-primary">Contact</Link></li>
-                            <li><Link href="/faq" className="hover:text-primary">FAQ</Link></li>
-                            <li><Link href="/terms" className="hover:text-primary">Terms of Service</Link></li>
                         </ul>
                     </div>
 

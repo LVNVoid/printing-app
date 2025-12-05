@@ -135,7 +135,7 @@ export default async function ProductsPage(props: ProductsPageProps) {
 
     return (
         <div className="py-8">
-            <div className="container">
+            <div className="container px-4">
                 <CategoryList activeCategory={category} />
                 <Suspense fallback={<ProductSkeleton />}>
                     <ProductSection categorySlug={category} page={page} search={search} />
