@@ -16,27 +16,28 @@ interface ProductSectionProps {
     search?: string;
 }
 
-export async function ProductSection({ categorySlug, page = 1, search }: ProductSectionProps) {
-    const pageSize = 8;
-    const skip = (page - 1) * pageSize;
+import { unstable_cache } from 'next/cache';
 
-    const where: any = {};
+const getCachedProducts = unstable_cache(
+    async (page: number, categorySlug?: string, search?: string) => {
+        const pageSize = 8;
+        const skip = (page - 1) * pageSize;
+        const where: any = {};
 
-    if (categorySlug) {
-        where.category = {
-            slug: categorySlug
-        };
-    }
+        if (categorySlug) {
+            where.category = {
+                slug: categorySlug
+            };
+        }
 
-    if (search) {
-        where.OR = [
-            { name: { contains: search, mode: 'insensitive' } },
-            { description: { contains: search, mode: 'insensitive' } },
-        ];
-    }
+        if (search) {
+            where.OR = [
+                { name: { contains: search, mode: 'insensitive' } },
+                { description: { contains: search, mode: 'insensitive' } },
+            ];
+        }
 
-    const [productsData, categoryData] = await Promise.all([
-        Promise.all([
+        return Promise.all([
             prisma.product.findMany({
                 take: pageSize,
                 skip,
@@ -50,7 +51,17 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
                 },
             }),
             prisma.product.count({ where })
-        ]),
+        ]);
+    },
+    ['products-list'],
+    { revalidate: 3600, tags: ['products'] }
+);
+
+export async function ProductSection({ categorySlug, page = 1, search }: ProductSectionProps) {
+    const pageSize = 8;
+
+    const [productsData, categoryData] = await Promise.all([
+        getCachedProducts(page, categorySlug, search),
         categorySlug ? prisma.category.findUnique({
             where: { slug: categorySlug },
             select: { name: true }
