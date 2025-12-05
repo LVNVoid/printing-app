@@ -15,27 +15,96 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
     const { slug } = await params;
+
     const product = await prisma.product.findUnique({
         where: { slug },
-        include: { pictures: true },
+        include: {
+            pictures: true,
+            category: true
+        },
     });
 
     if (!product) {
         return {
-            title: 'Product Not Found',
+            title: 'Produk Tidak Ditemukan',
+            description: 'Produk yang Anda cari tidak tersedia di Foman Percetakan',
         };
     }
 
-    const primaryImage = product.pictures[0]?.imageUrl;
+    const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
+    const productUrl = `https://foman.co.id/products/${slug}`;
+
+    const priceValue = product.price.toString();
+
+    const seoDescription = product.description
+        ? `${product.description.substring(0, 150)}${product.description.length > 150 ? '...' : ''}`
+        : `Pesan ${product.name} berkualitas tinggi dari Foman Percetakan. Harga ${formatCurrency(product.price)}. Layanan profesional dan hasil memuaskan.`;
+
+    const keywords = [
+        product.name,
+        `cetak ${product.name}`,
+        `jasa ${product.name}`,
+        product.category?.name || 'percetakan',
+        'Foman',
+        'percetakan',
+        'printing',
+        'cetak online',
+        'cetak murah',
+        'cetak berkualitas'
+    ];
 
     return {
-        title: `${product.name} | Cloudinary Next`,
-        description: product.description || `Buy ${product.name} at Cloudinary Next`,
+        title: `${product.name} - ${formatCurrency(product.price)}`,
+        description: seoDescription,
+        keywords: keywords,
+
         openGraph: {
-            title: product.name,
-            description: product.description || `Buy ${product.name} at Cloudinary Next`,
-            images: primaryImage ? [{ url: primaryImage }] : [],
+            title: `${product.name} | Foman Percetakan`,
+            description: seoDescription,
+            url: productUrl,
+            siteName: 'Foman Percetakan',
+            locale: 'id_ID',
+            type: 'website',
+            images: [
+                {
+                    url: primaryImage,
+                    width: 1200,
+                    height: 1200,
+                    alt: product.name,
+                },
+                ...(product.pictures
+                    .slice(1, 4)
+                    .filter((pic) => pic.imageUrl)
+                    .map((pic) => ({
+                        url: pic.imageUrl!,
+                        width: 800,
+                        height: 800,
+                        alt: `${product.name} - Gambar tambahan`,
+                    }))),
+            ],
         },
+
+        twitter: {
+            card: 'summary_large_image',
+            title: `${product.name} - ${formatCurrency(product.price)}`,
+            description: seoDescription,
+            images: [primaryImage],
+            creator: '@fomanpercetakan',
+        },
+
+        alternates: {
+            canonical: productUrl,
+        },
+
+        robots: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+
+        category: product.category?.name || 'Percetakan',
+
     };
 }
 

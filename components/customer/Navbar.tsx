@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { useCart } from '@/components/customer/CartContext';
+import Image from 'next/image';
 
 export function Navbar({ storeName }: { storeName?: string }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,6 @@ export function Navbar({ storeName }: { storeName?: string }) {
     const { data: session } = useSession();
     const { cartCount, setIsOpen: setCartOpen, clearCart } = useCart();
     const pathname = usePathname();
-
 
     const handleLogout = () => {
         clearCart();
@@ -124,25 +124,54 @@ export function Navbar({ storeName }: { storeName?: string }) {
                             ) : session ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="rounded-full">
-                                            <User className="h-5 w-5" />
+                                        <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full overflow-hidden p-0">
+                                            {session.user.image ? (
+                                                <Image
+                                                    src={session.user.image}
+                                                    alt={session.user.name || 'User'}
+                                                    width={40}
+                                                    height={40}
+                                                    className="h-full w-full rounded-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="h-full w-full rounded-full bg-primary/10 flex items-center justify-center">
+                                                    <User className="h-5 w-5 text-primary" />
+                                                </div>
+                                            )}
                                             <span className="sr-only">User menu</span>
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-48">
-                                        <DropdownMenuLabel className="truncate">
-                                            {session.user.name}
+                                    <DropdownMenuContent align="end" className="w-56">
+                                        <DropdownMenuLabel>
+                                            <div className="flex flex-col space-y-1">
+                                                <p className="text-sm font-medium leading-none">
+                                                    {session.user.name}
+                                                </p>
+                                                <p className="text-xs leading-none text-muted-foreground">
+                                                    {session.user.email}
+                                                </p>
+                                            </div>
                                         </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/profile" className="cursor-pointer">
+                                                Profile
+                                            </Link>
+                                        </DropdownMenuItem>
                                         {session.user.role === 'ADMIN' && (
                                             <DropdownMenuItem asChild>
-                                                <Link href="/admin/dashboard">Admin Dashboard</Link>
+                                                <Link href="/admin/dashboard" className="cursor-pointer">
+                                                    Admin Dashboard
+                                                </Link>
                                             </DropdownMenuItem>
                                         )}
                                         <DropdownMenuItem asChild>
-                                            <Link href="/orders">My Orders</Link>
+                                            <Link href="/orders" className="cursor-pointer">
+                                                My Orders
+                                            </Link>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={handleLogout}>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
                                             Log out
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -169,12 +198,24 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                     </Button>
                                 </SheetTrigger>
                                 <SheetContent side="right" className="w-[280px] sm:w-[350px]">
-                                    <div className="flex flex-col gap-6 mt-6 mx-4">
+                                    <div className="flex flex-col gap-6 mt-6">
                                         {/* Mobile User Info */}
                                         {mounted && session && (
-                                            <div className="flex items-center gap-3 pb-4 border-b">
-                                                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                                    <User className="h-5 w-5 text-primary" />
+                                            <div className="flex items-center gap-3 pb-4 border-b px-4">
+                                                <div className="relative h-12 w-12 rounded-full ring-2 ring-primary/10 overflow-hidden flex-shrink-0">
+                                                    {session.user.image ? (
+                                                        <Image
+                                                            src={session.user.image}
+                                                            alt={session.user.name || 'User'}
+                                                            width={48}
+                                                            height={48}
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="h-full w-full bg-primary/10 flex items-center justify-center">
+                                                            <User className="h-6 w-6 text-primary" />
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-medium truncate">
@@ -188,18 +229,18 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                         )}
 
                                         {/* Navigation Links */}
-                                        <nav className="flex flex-col gap-3">
+                                        <nav className="flex flex-col gap-1">
                                             <Link
                                                 href="/"
                                                 onClick={() => setIsOpen(false)}
-                                                className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname === '/' ? 'text-primary' : 'text-muted-foreground'}`}
+                                                className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname === '/' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                             >
                                                 Home
                                             </Link>
                                             <Link
                                                 href="/products"
                                                 onClick={() => setIsOpen(false)}
-                                                className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname?.startsWith('/products') ? 'text-primary' : 'text-muted-foreground'}`}
+                                                className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/products') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                             >
                                                 Products
                                             </Link>
@@ -209,7 +250,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                         <Link
                                                             href="/admin/dashboard"
                                                             onClick={() => setIsOpen(false)}
-                                                            className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname?.startsWith('/admin') ? 'text-primary' : 'text-muted-foreground'}`}
+                                                            className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/admin') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                                         >
                                                             Admin Dashboard
                                                         </Link>
@@ -217,27 +258,34 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                     <Link
                                                         href="/orders"
                                                         onClick={() => setIsOpen(false)}
-                                                        className={`text-base font-medium hover:text-primary transition-colors py-2 ${pathname?.startsWith('/orders') ? 'text-primary' : 'text-muted-foreground'}`}
+                                                        className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/orders') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                                     >
                                                         My Orders
+                                                    </Link>
+                                                    <Link
+                                                        href="/profile"
+                                                        onClick={() => setIsOpen(false)}
+                                                        className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/profile') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
+                                                    >
+                                                        Profile
                                                     </Link>
                                                 </>
                                             )}
                                         </nav>
 
                                         {/* Theme Toggle for Mobile */}
-                                        <div className="flex items-center justify-between py-2 border-t">
+                                        <div className="flex items-center justify-between py-3 px-3 border-t border-b">
                                             <span className="text-sm font-medium">Theme</span>
                                             <ModeToggle />
                                         </div>
 
                                         {/* Auth Buttons */}
                                         {mounted && (
-                                            <div className="flex flex-col gap-2 pt-4 border-t">
+                                            <div className="flex flex-col gap-2 mt-auto">
                                                 {session ? (
                                                     <Button
                                                         variant="outline"
-                                                        className="w-full"
+                                                        className="w-full text-red-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
                                                         onClick={() => {
                                                             handleLogout();
                                                             setIsOpen(false);

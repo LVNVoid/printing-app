@@ -1,6 +1,15 @@
 import { RegisterForm } from './register-form';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-const RegisterPage = () => {
+const RegisterPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    redirect('/');
+  }
+
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
       <RegisterForm className="w-full max-w-sm" />

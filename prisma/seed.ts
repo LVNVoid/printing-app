@@ -24,6 +24,7 @@ async function main() {
     data: {
       email: 'admin@percetakan.com',
       name: 'Administrator',
+      phoneNumber: '08123456789',
       password: hashedPassword,
       role: Role.ADMIN,
       profileUrl: 'https://ui-avatars.com/api/?name=Administrator&background=0D8ABC&color=fff',
@@ -34,6 +35,7 @@ async function main() {
     data: {
       email: 'john@example.com',
       name: 'John',
+      phoneNumber: '08123456788',
       password: hashedPassword,
       role: Role.CUSTOMER,
       profileUrl: 'https://ui-avatars.com/api/?name=John&background=4CAF50&color=fff',
@@ -44,6 +46,7 @@ async function main() {
     data: {
       email: 'doe@example.com',
       name: 'Doe',
+      phoneNumber: '08123456777',
       password: hashedPassword,
       role: Role.CUSTOMER,
       profileUrl: 'https://ui-avatars.com/api/?name=Doe&background=FF9800&color=fff',

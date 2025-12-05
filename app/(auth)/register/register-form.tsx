@@ -26,6 +26,11 @@ import { SignUp } from '@/actions/auth';
 const registerSchema = z.object({
     name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
     email: z.string().email({ message: 'Invalid email address' }),
+    phoneNumber: z
+        .string()
+        .regex(/^(\+62|62|0)8[1-9][0-9]{6,9}$/, {
+            message: 'Invalid Indonesian phone number format',
+        }),
     password: z
         .string()
         .min(6, { message: 'Password must be at least 6 characters' }),
@@ -55,43 +60,15 @@ export function RegisterForm({
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('email', data.email);
+        formData.append('phoneNumber', data.phoneNumber);
         formData.append('password', data.password);
 
         try {
-            // We can't easily use the server action directly with react-hook-form's onSubmit
-            // if the server action expects FormData and returns a complex state object
-            // that we want to handle manually here.
-            // However, for this refactor, we are wrapping the server action call.
-            // Assuming SignUp is compatible or we adapt it.
-            // Let's assume SignUp takes FormData.
+            const result = await SignUp({} as any, formData);
 
-            // Note: In a real app, you might want to adjust the server action to take a plain object
-            // or handle the response differently. For now, we mimic the previous behavior.
-
-            // Since the original used useActionState, it likely returned a state.
-            // We'll call it directly here.
-
-            // Check if SignUp is an async function we can await.
-            // If it's a server action, it should be.
-
-            await SignUp({} as any, formData);
-            // The original code didn't seem to handle success redirect in the component,
-            // maybe the action handles it?
-            // For now let's just assume success if no error thrown, or we might need to check the result.
-            // But wait, the original code was:
-            // const [state, action, pending] = useActionState<RegisterState, FormData>(SignUp, {});
-
-            // If we want to keep using the server action as is, we might need to be careful.
-            // Let's try to call it. If it returns state, we use it.
-
-            // Ideally we should refactor the server action to be more API-like if we use client-side submission,
-            // OR we keep using useActionState but bind it to the form.
-            // But react-hook-form + useActionState is a bit tricky.
-            // Let's stick to client-side submission calling the action for better control over UI state (loading, errors)
-            // as requested by "better form".
-
-            // Let's assume for this task I can just call it.
-            // If I encounter issues I'll fix them.
+            if (result?.error) {
+                setError(result.error);
+            }
 
         } catch (err) {
             console.error(err);
@@ -134,6 +111,19 @@ export function RegisterForm({
                                     suppressHydrationWarning
                                 />
                                 <FieldError errors={[{ message: errors.email?.message }]} />
+                            </Field>
+                            <Field>
+                                <FieldLabel htmlFor="phoneNumber">Phone Number</FieldLabel>
+                                <Input
+                                    id="phoneNumber"
+                                    type="tel"
+                                    placeholder="08123456789"
+                                    {...register('phoneNumber')}
+                                    suppressHydrationWarning
+                                />
+                                <FieldError
+                                    errors={[{ message: errors.phoneNumber?.message }]}
+                                />
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="password">Password</FieldLabel>

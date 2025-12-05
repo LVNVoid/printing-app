@@ -27,6 +27,7 @@ model User {
   profileUrl      String?
   profilePublicId String?
   role            Role     @default(CUSTOMER)
+  phoneNumber     String   @unique
   orders          Order[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
