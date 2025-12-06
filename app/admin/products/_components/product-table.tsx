@@ -2,10 +2,17 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { DeleteProductButton } from './delete-product-button';
+import { DeleteProductMenuItem } from './delete-product-button';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, MoreHorizontal, Pencil } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface Product {
     id: string;
@@ -81,15 +88,30 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                                         </td>
                                         <td className="p-4 align-middle max-w-xs truncate">{product.description}</td>
                                         <td className="p-4 align-middle text-right">
-                                            <div className="flex justify-end gap-2">
-                                                <Button variant="ghost" size="sm" asChild>
-                                                    <Link href={`/admin/products/${product.id}`}>View</Link>
-                                                </Button>
-                                                <Button variant="outline" size="sm" asChild>
-                                                    <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
-                                                </Button>
-                                                <DeleteProductButton id={product.id} />
-                                            </div>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                        <span className="sr-only">Open menu</span>
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuItem asChild>
+                                                        <Link href={`/admin/products/${product.id}`}>
+                                                            <Eye className="mr-2 h-4 w-4" />
+                                                            View
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem asChild>
+                                                        <Link href={`/admin/products/${product.id}/edit`}>
+                                                            <Pencil className="mr-2 h-4 w-4" />
+                                                            Edit
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    <DeleteProductMenuItem id={product.id} />
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </td>
                                     </tr>
                                 ))

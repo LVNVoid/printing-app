@@ -33,7 +33,7 @@ interface CategoryDialogProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-export function CategoryDialog({ category, open: controlledOpen, onOpenChange: controlledOnOpenChange }: CategoryDialogProps) {
+export function CategoryDialog({ category, open: controlledOpen, onOpenChange: controlledOnOpenChange, trigger }: CategoryDialogProps & { trigger?: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const isEditing = !!category;
 
@@ -54,7 +54,7 @@ export function CategoryDialog({ category, open: controlledOpen, onOpenChange: c
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
-                {isEditing ? (
+                {trigger ? trigger : (isEditing ? (
                     <Button variant="ghost" size="icon">
                         <Pencil className="h-4 w-4" />
                         <span className="sr-only">Edit</span>
@@ -63,7 +63,7 @@ export function CategoryDialog({ category, open: controlledOpen, onOpenChange: c
                     <Button>
                         Add Category
                     </Button>
-                )}
+                ))}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

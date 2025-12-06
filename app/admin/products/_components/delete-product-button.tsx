@@ -11,19 +11,21 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { deleteProduct } from '../actions';
 import { useTransition } from 'react';
+import { Trash2 } from 'lucide-react';
 
-export function DeleteProductButton({ id }: { id: string }) {
+export function DeleteProductMenuItem({ id }: { id: string }) {
     const [isPending, startTransition] = useTransition();
 
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" disabled={isPending}>
-                    {isPending ? 'Deleting...' : 'Delete'}
-                </Button>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600 focus:text-red-600">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                </DropdownMenuItem>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

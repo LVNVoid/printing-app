@@ -5,6 +5,14 @@ import Link from 'next/link';
 import { OrdersTableToolbar } from './_components/orders-table-toolbar';
 import { OrdersPagination } from './_components/orders-pagination';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import { Eye, MoreHorizontal } from 'lucide-react';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface OrdersAdminPageProps {
     searchParams: Promise<{
@@ -96,9 +104,23 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                                                 {formatDate(order.createdAt)}
                                             </td>
                                             <td className="p-4 align-middle text-right">
-                                                <Button variant="ghost" size="sm" asChild>
-                                                    <Link href={`/admin/orders/${order.id}`}>View</Link>
-                                                </Button>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                                            <span className="sr-only">Open menu</span>
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={`/admin/orders/${order.id}`}>
+                                                                <Eye className="mr-2 h-4 w-4" />
+                                                                View
+                                                            </Link>
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
                                             </td>
                                         </tr>
                                     ))
