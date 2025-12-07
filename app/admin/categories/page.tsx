@@ -10,13 +10,13 @@ export default async function CategoriesPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
-                    <p className="text-sm text-muted-foreground mt-1">Manage your product categories.</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Kategori</h1>
+                    <p className="text-sm text-muted-foreground mt-1">Kelola kategori produk.</p>
                 </div>
                 <CategoryDialog />
             </div>
 
-            <Suspense fallback={<div>Loading categories...</div>}>
+            <Suspense fallback={<div>Memuat kategori...</div>}>
                 <CategoryTable categories={categories} />
             </Suspense>
         </div>

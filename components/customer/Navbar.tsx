@@ -58,20 +58,20 @@ export function Navbar({ storeName }: { storeName?: string }) {
                             href="/"
                             className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
                         >
-                            Home
+                            Beranda
                         </Link>
                         <Link
                             href="/products"
                             className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/products') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
                         >
-                            Products
+                            Produk
                         </Link>
                         {session && (
                             <Link
                                 href="/orders"
                                 className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/orders') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
                             >
-                                My Orders
+                                Pesanan Saya
                             </Link>
                         )}
                     </nav>
@@ -93,7 +93,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                             onClick={() => setShowSearch(!showSearch)}
                         >
                             <Search className="h-4 w-4 sm:h-5 sm:w-5" />
-                            <span className="sr-only">Search</span>
+                            <span className="sr-only">Cari</span>
                         </Button>
 
                         {/* Theme Toggle */}
@@ -114,7 +114,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                     {cartCount > 99 ? '99+' : cartCount}
                                 </span>
                             )}
-                            <span className="sr-only">Cart</span>
+                            <span className="sr-only">Keranjang</span>
                         </Button>
 
                         {/* Desktop User Menu */}
@@ -138,7 +138,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                     <User className="h-5 w-5 text-primary" />
                                                 </div>
                                             )}
-                                            <span className="sr-only">User menu</span>
+                                            <span className="sr-only">Menu pengguna</span>
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-56">
@@ -155,34 +155,34 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem asChild>
                                             <Link href="/profile" className="cursor-pointer">
-                                                Profile
+                                                Profil
                                             </Link>
                                         </DropdownMenuItem>
                                         {session.user.role === 'ADMIN' && (
                                             <DropdownMenuItem asChild>
                                                 <Link href="/admin/dashboard" className="cursor-pointer">
-                                                    Admin Dashboard
+                                                    Dasbor Admin
                                                 </Link>
                                             </DropdownMenuItem>
                                         )}
                                         <DropdownMenuItem asChild>
                                             <Link href="/orders" className="cursor-pointer">
-                                                My Orders
+                                                Pesanan Saya
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
-                                            Log out
+                                            Keluar
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             ) : (
                                 <>
                                     <Link href="/login">
-                                        <Button variant="ghost" size="sm">Log in</Button>
+                                        <Button variant="ghost" size="sm">Masuk</Button>
                                     </Link>
                                     <Link href="/register">
-                                        <Button size="sm">Sign Up</Button>
+                                        <Button size="sm">Daftar</Button>
                                     </Link>
                                 </>
                             )}
@@ -194,7 +194,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                 <SheetTrigger asChild>
                                     <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
                                         <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
-                                        <span className="sr-only">Toggle menu</span>
+                                        <span className="sr-only">Buka menu</span>
                                     </Button>
                                 </SheetTrigger>
                                 <SheetContent side="right" className="w-[280px] sm:w-[350px]">
@@ -235,14 +235,14 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                 onClick={() => setIsOpen(false)}
                                                 className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname === '/' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                             >
-                                                Home
+                                                Beranda
                                             </Link>
                                             <Link
                                                 href="/products"
                                                 onClick={() => setIsOpen(false)}
                                                 className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/products') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                             >
-                                                Products
+                                                Produk
                                             </Link>
                                             {mounted && session && (
                                                 <>
@@ -252,7 +252,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                             onClick={() => setIsOpen(false)}
                                                             className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/admin') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                                         >
-                                                            Admin Dashboard
+                                                            Dasbor Admin
                                                         </Link>
                                                     )}
                                                     <Link
@@ -260,14 +260,14 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                         onClick={() => setIsOpen(false)}
                                                         className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/orders') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                                     >
-                                                        My Orders
+                                                        Pesanan Saya
                                                     </Link>
                                                     <Link
                                                         href="/profile"
                                                         onClick={() => setIsOpen(false)}
                                                         className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/profile') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                                     >
-                                                        Profile
+                                                        Profil
                                                     </Link>
                                                 </>
                                             )}
@@ -275,7 +275,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
 
                                         {/* Theme Toggle for Mobile */}
                                         <div className="flex items-center justify-between py-3 px-3 border-t border-b">
-                                            <span className="text-sm font-medium">Theme</span>
+                                            <span className="text-sm font-medium">Tema</span>
                                             <ModeToggle />
                                         </div>
 
@@ -291,17 +291,17 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                             setIsOpen(false);
                                                         }}
                                                     >
-                                                        Log out
+                                                        Keluar
                                                     </Button>
                                                 ) : (
                                                     <>
                                                         <Link href="/login" onClick={() => setIsOpen(false)}>
                                                             <Button variant="outline" className="w-full">
-                                                                Log in
+                                                                Masuk
                                                             </Button>
                                                         </Link>
                                                         <Link href="/register" onClick={() => setIsOpen(false)}>
-                                                            <Button className="w-full">Sign Up</Button>
+                                                            <Button className="w-full">Daftar</Button>
                                                         </Link>
                                                     </>
                                                 )}

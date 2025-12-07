@@ -127,9 +127,19 @@ export async function getStoreSettings() {
 
 export async function updateStoreSettings(prevState: any, formData: FormData) {
   const storeName = formData.get('storeName') as string;
+  const whatsappNumber = formData.get('whatsappNumber') as string;
 
   if (!storeName) {
     return { error: { storeName: ['Store name is required'] } };
+  }
+
+  // Validate WhatsApp Number
+  // Must start with 62 and be numeric
+  if (whatsappNumber) {
+    const whatsappRegex = /^62\d+$/;
+    if (!whatsappRegex.test(whatsappNumber)) {
+        return { error: { whatsappNumber: ['Nomor WhatsApp harus diawali dengan 62 dan hanya berisi angka'] } };
+    }
   }
 
   const existingSettings = await prisma.storeSettings.findFirst();
@@ -137,11 +147,11 @@ export async function updateStoreSettings(prevState: any, formData: FormData) {
   if (existingSettings) {
     await prisma.storeSettings.update({
       where: { id: existingSettings.id },
-      data: { storeName },
+      data: { storeName, whatsappNumber },
     });
   } else {
     await prisma.storeSettings.create({
-      data: { storeName },
+      data: { storeName, whatsappNumber },
     });
   }
 

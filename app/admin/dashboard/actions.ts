@@ -3,6 +3,10 @@
 import prisma from '@/lib/prisma';
 
 export async function getDashboardStats() {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
   const [
     totalRevenue,
     totalOrders,
@@ -10,7 +14,7 @@ export async function getDashboardStats() {
     totalCustomers,
     recentOrders
   ] = await Promise.all([
-    // Total Revenue (Sum of paid/completed orders)
+    // Total Revenue Bulan Ini
     prisma.order.aggregate({
       _sum: {
         total: true,
@@ -19,11 +23,22 @@ export async function getDashboardStats() {
         status: {
           in: ['PAID', 'SHIPPED', 'COMPLETED'],
         },
+        createdAt: {
+          gte: startOfMonth,
+          lt: startOfNextMonth,
+        },
       },
     }),
 
     // Total Orders
-    prisma.order.count(),
+     prisma.order.count({
+      where: {
+        createdAt: {
+          gte: startOfMonth,
+          lt: startOfNextMonth,
+        },
+      },
+    }),
 
     // Total Products
     prisma.product.count(),

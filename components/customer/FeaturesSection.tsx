@@ -2,23 +2,23 @@ import { CheckCircle2, Zap, Leaf, ShieldCheck } from 'lucide-react';
 
 const features = [
     {
-        title: 'Premium Quality',
-        description: 'We use the finest materials and latest printing technology to ensure your prints look perfect.',
+        title: 'Kualitas Premium',
+        description: 'Kami menggunakan bahan terbaik dan teknologi pencetakan terbaru untuk memastikan hasil cetak Anda sempurna.',
         icon: CheckCircle2,
     },
     {
-        title: 'Fast Turnaround',
-        description: 'Need it yesterday? We offer same-day and next-day delivery options for most products.',
+        title: 'Pengerjaan Cepat',
+        description: 'Butuh cepat? Kami menawarkan opsi pengiriman hari yang sama dan hari berikutnya untuk sebagian besar produk.',
         icon: Zap,
     },
     {
-        title: 'Eco-Friendly',
-        description: 'We are committed to sustainability with recycled paper options and soy-based inks.',
+        title: 'Ramah Lingkungan',
+        description: 'Kami berkomitmen pada keberlanjutan dengan opsi kertas daur ulang dan tinta berbasis kedelai.',
         icon: Leaf,
     },
     {
-        title: 'Satisfaction Guaranteed',
-        description: 'Not happy with your order? We will reprint it or give you a full refund. No questions asked.',
+        title: 'Jaminan Kepuasan',
+        description: 'Tidak puas dengan pesanan Anda? Kami akan mencetak ulang atau memberikan pengembalian dana penuh. Tanpa banyak tanya.',
         icon: ShieldCheck,
     },
 ];
@@ -29,11 +29,11 @@ export function FeaturesSection() {
             <div className="container">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-3xl font-bold tracking-tight md:text-5xl mb-6">
-                        Why Choose PrintMaster?
+                        Mengapa Memilih PrintMaster?
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        We are more than just a printing company. We are your partner in success.
-                        Here is why thousands of businesses trust us with their printing needs.
+                        Kami lebih dari sekadar perusahaan percetakan. Kami adalah mitra sukses Anda.
+                        Inilah mengapa ribuan bisnis mempercayakan kebutuhan percetakan mereka kepada kami.
                     </p>
                 </div>
 

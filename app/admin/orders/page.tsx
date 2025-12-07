@@ -44,12 +44,12 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-                    <p className="text-sm text-muted-foreground mt-1">Manage your orders</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Pesanan</h1>
+                    <p className="text-sm text-muted-foreground mt-1">Kelola pesanan</p>
                 </div>
             </div>
             <div className="space-y-4">
-                <Suspense fallback={<div>Loading toolbar...</div>}>
+                <Suspense fallback={<div>Memuat toolbar...</div>}>
                     <OrdersTableToolbar />
                 </Suspense>
 
@@ -58,20 +58,20 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                         <table className="w-full caption-bottom text-sm">
                             <thead className="[&_tr]:border-b">
                                 <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Order ID</th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Customer</th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Items</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">ID</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Pelanggan</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Jumlah Pesanan</th>
                                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Total</th>
                                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Status</th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Date</th>
-                                    <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Tanggal</th>
+                                    <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground"></th>
                                 </tr>
                             </thead>
                             <tbody className="[&_tr:last-child]:border-0">
                                 {orders.length === 0 ? (
                                     <tr>
                                         <td colSpan={7} className="p-4 text-center text-muted-foreground">
-                                            No orders found.
+                                            Tidak ada pesanan ditemukan.
                                         </td>
                                     </tr>
                                 ) : (
@@ -86,7 +86,7 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                                                     <span className="text-xs text-muted-foreground">{order.user.email}</span>
                                                 </div>
                                             </td>
-                                            <td className="p-4 align-middle">{order._count.items} items</td>
+                                            <td className="p-4 align-middle">{order._count.items} produk</td>
                                             <td className="p-4 align-middle">
                                                 {formatCurrency(order.total)}
                                             </td>
@@ -116,7 +116,7 @@ export default async function OrdersAdminPage({ searchParams }: OrdersAdminPageP
                                                         <DropdownMenuItem asChild>
                                                             <Link href={`/admin/orders/${order.id}`}>
                                                                 <Eye className="mr-2 h-4 w-4" />
-                                                                View
+                                                                Detail
                                                             </Link>
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>

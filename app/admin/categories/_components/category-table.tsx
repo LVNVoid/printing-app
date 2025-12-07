@@ -35,12 +35,12 @@ export function CategoryTable({ categories }: CategoryTableProps) {
     const [isPending, startTransition] = useTransition();
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure you want to delete this category?')) return;
+        if (!confirm('Yakin ingin menghapus kategori ini?')) return;
 
         startTransition(async () => {
             const result = await deleteCategory(id);
             if (result.success) {
-                toast.success('Category deleted');
+                toast.success('Kategori berhasil dihapus');
             } else {
                 toast.error(result.error as string);
             }
@@ -52,17 +52,17 @@ export function CategoryTable({ categories }: CategoryTableProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</TableHead>
+                        <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nama Kategori</TableHead>
                         <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Slug</TableHead>
-                        <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Products</TableHead>
-                        <TableHead className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</TableHead>
+                        <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Produk</TableHead>
+                        <TableHead className="h-12 px-4 text-right align-middle font-medium text-muted-foreground"></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {categories.length === 0 ? (
                         <TableRow>
                             <TableCell colSpan={4} className="text-center">
-                                No categories found.
+                                Tidak ada kategori ditemukan.
                             </TableCell>
                         </TableRow>
                     ) : (
@@ -76,12 +76,12 @@ export function CategoryTable({ categories }: CategoryTableProps) {
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
+                                                    <span className="sr-only">Buka menu</span>
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                                                 <CategoryDialog
                                                     category={category}
                                                     trigger={
@@ -97,7 +97,7 @@ export function CategoryTable({ categories }: CategoryTableProps) {
                                                     disabled={isPending}
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4" />
-                                                    Delete
+                                                    Hapus
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

@@ -14,13 +14,13 @@ export function Footer() {
                             <span className="text-xl font-bold tracking-tight">PrintMaster</span>
                         </Link>
                         <p className="text-sm text-muted-foreground leading-relaxed">
-                            Your one-stop solution for all high-quality printing needs.
-                            Professional, fast, and reliable services.
+                            Solusi satu pintu untuk semua kebutuhan percetakan berkualitas tinggi Anda.
+                            Layanan profesional, cepat, dan terpercaya.
                         </p>
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4">Products</h3>
+                        <h3 className="font-semibold mb-4">Produk</h3>
                         <ul className="space-y-2 text-sm text-muted-foreground">
                             <li><Link href="/products?category=brosur" className="hover:text-primary">Brosur</Link></li>
                             <li><Link href="/products?category=kalender" className="hover:text-primary">Kalender</Link></li>
@@ -30,15 +30,15 @@ export function Footer() {
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4">Company</h3>
+                        <h3 className="font-semibold mb-4">Perusahaan</h3>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li><Link href="/about" className="hover:text-primary">About Us</Link></li>
-                            <li><Link href="/contact" className="hover:text-primary">Contact</Link></li>
+                            <li><Link href="/about" className="hover:text-primary">Tentang Kami</Link></li>
+                            <li><Link href="/contact" className="hover:text-primary">Kontak</Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4">Contact Us</h3>
+                        <h3 className="font-semibold mb-4">Hubungi Kami</h3>
                         <ul className="space-y-3 text-sm text-muted-foreground">
                             <li className="flex items-center gap-2">
                                 <MapPin className="h-4 w-4" />
@@ -68,10 +68,10 @@ export function Footer() {
                 </div>
 
                 <div className="border-t mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-                    <p>© {new Date().getFullYear()} PrintMaster. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} PrintMaster. Hak cipta dilindungi.</p>
                     <div className="flex gap-6">
-                        <Link href="/privacy" className="hover:text-primary">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-primary">Terms & Conditions</Link>
+                        <Link href="/privacy" className="hover:text-primary">Kebijakan Privasi</Link>
+                        <Link href="/terms" className="hover:text-primary">Syarat & Ketentuan</Link>
                     </div>
                 </div>
             </div>

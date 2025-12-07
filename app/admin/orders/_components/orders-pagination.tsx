@@ -39,11 +39,11 @@ export function OrdersPagination({ total, pages, page, limit }: OrdersPagination
     return (
         <div className="flex items-center justify-between px-2">
             <div className="flex-1 text-sm text-muted-foreground">
-                {total} total orders
+                {total} total pesanan
             </div>
             <div className="flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
-                    <p className="text-sm font-medium">Rows per page</p>
+                    <p className="text-sm font-medium">Baris per halaman</p>
                     <Select
                         value={limit.toString()}
                         onValueChange={handleLimitChange}
@@ -61,7 +61,7 @@ export function OrdersPagination({ total, pages, page, limit }: OrdersPagination
                     </Select>
                 </div>
                 <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-                    Page {page} of {pages}
+                    Halaman {page} dari {pages}
                 </div>
                 <div className="flex items-center space-x-2">
                     <Button
@@ -70,7 +70,7 @@ export function OrdersPagination({ total, pages, page, limit }: OrdersPagination
                         onClick={() => router.push(createPageURL(1))}
                         disabled={page <= 1}
                     >
-                        <span className="sr-only">Go to first page</span>
+                        <span className="sr-only">Ke halaman pertama</span>
                         <ChevronsLeft className="h-4 w-4" />
                     </Button>
                     <Button
@@ -79,7 +79,7 @@ export function OrdersPagination({ total, pages, page, limit }: OrdersPagination
                         onClick={() => router.push(createPageURL(page - 1))}
                         disabled={page <= 1}
                     >
-                        <span className="sr-only">Go to previous page</span>
+                        <span className="sr-only">Ke halaman sebelumnya</span>
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
                     <Button
@@ -88,7 +88,7 @@ export function OrdersPagination({ total, pages, page, limit }: OrdersPagination
                         onClick={() => router.push(createPageURL(page + 1))}
                         disabled={page >= pages}
                     >
-                        <span className="sr-only">Go to next page</span>
+                        <span className="sr-only">Ke halaman berikutnya</span>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                     <Button
@@ -97,7 +97,7 @@ export function OrdersPagination({ total, pages, page, limit }: OrdersPagination
                         onClick={() => router.push(createPageURL(pages))}
                         disabled={page >= pages}
                     >
-                        <span className="sr-only">Go to last page</span>
+                        <span className="sr-only">Ke halaman terakhir</span>
                         <ChevronsRight className="h-4 w-4" />
                     </Button>
                 </div>

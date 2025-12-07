@@ -38,18 +38,18 @@ export default async function OrdersPage() {
 
     return (
         <div className="container py-10">
-            <h1 className="text-3xl font-bold mb-8">My Orders</h1>
+            <h1 className="text-3xl font-bold mb-8">Pesanan Saya</h1>
 
             {orders.length > 0 ? (
                 <div className="border rounded-lg">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Order ID</TableHead>
-                                <TableHead>Date</TableHead>
+                                <TableHead>ID Pesanan</TableHead>
+                                <TableHead>Tanggal</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Total</TableHead>
-                                <TableHead>Items</TableHead>
+                                <TableHead>Item</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -66,7 +66,7 @@ export default async function OrdersPage() {
                                         {formatCurrency(order.total)}
                                     </TableCell>
                                     <TableCell>
-                                        {order.items.length} item(s)
+                                        {order.items.length} item
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -75,7 +75,7 @@ export default async function OrdersPage() {
                 </div>
             ) : (
                 <div className="text-center py-20 border rounded-lg bg-secondary/10">
-                    <p className="text-muted-foreground">You have no orders yet.</p>
+                    <p className="text-muted-foreground">Anda belum memiliki pesanan.</p>
                 </div>
             )}
         </div>

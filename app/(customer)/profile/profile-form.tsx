@@ -85,7 +85,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
             if (result.error) {
                 setError(result.error);
             } else {
-                setSuccess('Profile updated successfully');
+                setSuccess('Profil berhasil diperbarui');
                 router.refresh();
             }
         });
@@ -94,9 +94,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
     return (
         <Card className="w-full max-w-2xl mx-auto bg-background ">
             <CardHeader>
-                <CardTitle>Profile Settings</CardTitle>
+                <CardTitle>Pengaturan Profil</CardTitle>
                 <CardDescription>
-                    Update your personal information and profile picture.
+                    Perbarui informasi pribadi dan foto profil Anda.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -113,7 +113,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                                 />
                             ) : (
                                 <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                    No Image
+                                    Tidak Ada Gambar
                                 </div>
                             )}
                         </div>
@@ -127,7 +127,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="name">Name</FieldLabel>
+                            <FieldLabel htmlFor="name">Nama</FieldLabel>
                             <Input id="name" {...register('name')} />
                             <FieldError errors={[{ message: errors.name?.message }]} />
                         </Field>
@@ -139,17 +139,17 @@ export function ProfileForm({ user }: ProfileFormProps) {
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="phoneNumber">Phone Number</FieldLabel>
+                            <FieldLabel htmlFor="phoneNumber">Nomor Telepon</FieldLabel>
                             <Input id="phoneNumber" type="tel" {...register('phoneNumber')} />
                             <FieldError errors={[{ message: errors.phoneNumber?.message }]} />
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="password">New Password (Optional)</FieldLabel>
+                            <FieldLabel htmlFor="password">Kata Sandi Baru (Opsional)</FieldLabel>
                             <Input
                                 id="password"
                                 type="password"
-                                placeholder="Leave blank to keep current password"
+                                placeholder="Biarkan kosong untuk menyimpan kata sandi saat ini"
                                 {...register('password')}
                             />
                             <FieldError errors={[{ message: errors.password?.message }]} />
@@ -164,7 +164,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                     )}
 
                     <Button type="submit" className="w-full" disabled={isPending}>
-                        {isPending ? 'Saving...' : 'Save Changes'}
+                        {isPending ? 'Menyimpan...' : 'Simpan Perubahan'}
                     </Button>
                 </form>
             </CardContent>

@@ -15,13 +15,13 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
 
     const handleAddToCart = () => {
         addItem(product);
-        toast.success('Added to cart');
+        toast.success('Ditambahkan ke keranjang');
     };
 
     return (
         <Button size="lg" className="w-full md:w-auto gap-2" onClick={handleAddToCart}>
             <ShoppingCart className="h-5 w-5" />
-            Add to Cart
+            Tambah ke Keranjang
         </Button>
     );
 }

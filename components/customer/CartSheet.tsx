@@ -42,7 +42,7 @@ export function CartSheet() {
                 {/* Header */}
                 <SheetHeader className="px-1">
                     <SheetTitle>
-                        Shopping Cart ({items.length})
+                        Keranjang Belanja ({items.length})
                     </SheetTitle>
                 </SheetHeader>
 
@@ -68,7 +68,7 @@ export function CartSheet() {
                                                 />
                                             ) : (
                                                 <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                                                    No Image
+                                                    Tanpa Gmb
                                                 </div>
                                             )}
                                         </div>
@@ -151,7 +151,7 @@ export function CartSheet() {
                                         href="/checkout"
                                         onClick={() => setIsOpen(false)}
                                     >
-                                        Checkout
+                                        Pembayaran
                                     </Link>
                                 </Button>
                             </SheetFooter>
@@ -163,7 +163,7 @@ export function CartSheet() {
                         <ShoppingBag className="h-12 w-12 text-muted-foreground" />
 
                         <span className="text-lg font-medium text-muted-foreground">
-                            Your cart is empty
+                            Keranjang Anda kosong
                         </span>
 
                         <Button
@@ -171,7 +171,7 @@ export function CartSheet() {
                             asChild
                             onClick={() => setIsOpen(false)}
                         >
-                            <Link href="/products">Continue Shopping</Link>
+                            <Link href="/products">Lanjut Belanja</Link>
                         </Button>
                     </div>
                 )}

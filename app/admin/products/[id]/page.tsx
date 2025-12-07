@@ -22,7 +22,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <Button variant="ghost" asChild className="mb-4 -ml-2">
                     <Link href="/admin/products">
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Back to Products
+                        Kembali ke Produk
                     </Link>
                 </Button>
 
@@ -39,7 +39,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     <Button asChild>
                         <Link href={`/admin/products/${product.id}/edit`}>
                             <Edit className="mr-2 h-4 w-4" />
-                            Edit Product
+                            Edit Produk
                         </Link>
                     </Button>
                 </div>
@@ -90,7 +90,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                             <div className="aspect-video bg-muted flex items-center justify-center">
                                 <div className="text-center text-muted-foreground">
                                     <Package className="mx-auto h-12 w-12 mb-2 opacity-50" />
-                                    <p>No images available</p>
+                                    <p>Tidak ada gambar tersedia</p>
                                 </div>
                             </div>
                         )}
@@ -98,9 +98,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                     {/* Description Card */}
                     <div className="rounded-lg border bg-card p-6">
-                        <h2 className="text-lg font-semibold mb-3">Description</h2>
+                        <h2 className="text-lg font-semibold mb-3">Deskripsi</h2>
                         <p className="text-muted-foreground leading-relaxed">
-                            {product.description || 'No description available for this product.'}
+                            {product.description || 'Tidak ada deskripsi tersedia untuk produk ini.'}
                         </p>
                     </div>
                 </div>
@@ -109,7 +109,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <div className="space-y-4">
                     {/* Price Card */}
                     <div className="rounded-lg border bg-card p-6">
-                        <h2 className="text-sm font-medium text-muted-foreground mb-2">Price</h2>
+                        <h2 className="text-sm font-medium text-muted-foreground mb-2">Harga</h2>
                         <p className="text-3xl font-bold text-primary">
                             {formatCurrency(product.price)}
                         </p>
@@ -117,23 +117,23 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                     {/* Product Details Card */}
                     <div className="rounded-lg border bg-card p-6 space-y-4">
-                        <h2 className="text-lg font-semibold mb-4">Product Details</h2>
+                        <h2 className="text-lg font-semibold mb-4">Detail Produk</h2>
 
                         <div className="space-y-3">
                             <div className="flex justify-between items-start py-2 border-b">
-                                <span className="text-sm font-medium text-muted-foreground">Product ID</span>
+                                <span className="text-sm font-medium text-muted-foreground">ID Produk</span>
                                 <span className="text-sm font-mono">{product.id}</span>
                             </div>
 
                             <div className="flex justify-between items-start py-2 border-b">
-                                <span className="text-sm font-medium text-muted-foreground">Category</span>
+                                <span className="text-sm font-medium text-muted-foreground">Kategori</span>
                                 <span className="text-sm font-medium">{product.category?.name || '-'}</span>
                             </div>
 
                             <div className="flex justify-between items-start py-2 border-b">
-                                <span className="text-sm font-medium text-muted-foreground">Images</span>
+                                <span className="text-sm font-medium text-muted-foreground">Gambar</span>
                                 <span className="text-sm font-medium">
-                                    {product.pictures?.length || 0} photo{product.pictures?.length !== 1 ? 's' : ''}
+                                    {product.pictures?.length || 0} foto
                                 </span>
                             </div>
                         </div>

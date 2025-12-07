@@ -34,20 +34,20 @@ const ProductsAdminPage = async ({ searchParams }: ProductsAdminPageProps) => {
       <div className="flex items-center justify-between">
         <div>
 
-          <h1 className="text-3xl font-bold tracking-tight">Products</h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage your products.</p>
+          <h1 className="text-3xl font-bold tracking-tight">Produk</h1>
+          <p className="text-sm text-muted-foreground mt-1">Kelola produk.</p>
         </div>
         <Button asChild>
-          <Link href="/admin/products/new">Add Product</Link>
+          <Link href="/admin/products/new">Tambah Produk Baru</Link>
         </Button>
       </div>
 
 
-      <Suspense fallback={<div>Loading toolbar...</div>}>
+      <Suspense fallback={<div>Memuat toolbar...</div>}>
         <ProductToolbar categories={categories} />
       </Suspense>
 
-      <Suspense fallback={<div>Loading table...</div>}>
+      <Suspense fallback={<div>Memuat tabel...</div>}>
         <ProductTable
           products={products}
           totalPages={totalPages}

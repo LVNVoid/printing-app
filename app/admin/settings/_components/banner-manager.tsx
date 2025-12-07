@@ -15,7 +15,7 @@ function SubmitButton() {
     const { pending } = useFormStatus();
     return (
         <Button type="submit" disabled={pending}>
-            {pending ? 'Adding...' : 'Add Banner'}
+            {pending ? 'Menambahkan...' : 'Tambah Banner'}
         </Button>
     );
 }
@@ -27,8 +27,8 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
         <div className="space-y-8">
             <Card>
                 <CardHeader>
-                    <CardTitle>Add New Banner</CardTitle>
-                    <CardDescription>Upload a new banner image to display on the home page.</CardDescription>
+                    <CardTitle>Tambah Banner Baru</CardTitle>
+                    <CardDescription>Unggah gambar banner baru untuk ditampilkan di beranda.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form action={async (formData) => {
@@ -38,15 +38,15 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                         form?.reset();
                     }} id="banner-form" className="space-y-4 max-w-xl">
                         <div className="space-y-2">
-                            <Label htmlFor="title">Title</Label>
+                            <Label htmlFor="title">Judul</Label>
                             <Input id="title" name="title" required placeholder="Summer Sale" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="link">Link (Optional)</Label>
+                            <Label htmlFor="link">Tautan (Opsional)</Label>
                             <Input id="link" name="link" placeholder="/products/summer-sale" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="image">Image</Label>
+                            <Label htmlFor="image">Gambar</Label>
                             <Input
                                 id="image"
                                 name="image"
@@ -71,7 +71,7 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                         </div>
                         <div className="flex items-center space-x-2">
                             <Switch id="active" name="active" defaultChecked />
-                            <Label htmlFor="active">Active immediately</Label>
+                            <Label htmlFor="active">Langsung aktif</Label>
                         </div>
                         <SubmitButton />
                     </form>
@@ -86,7 +86,7 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                             <img src={banner.imageUrl} alt={banner.title} className="object-cover w-full h-full" />
                             {!banner.active && (
                                 <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                                    <span className="bg-background/80 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">Inactive</span>
+                                    <span className="bg-background/80 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">Tidak Aktif</span>
                                 </div>
                             )}
                         </div>
@@ -106,14 +106,14 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                                         checked={banner.active}
                                         onCheckedChange={(checked) => toggleBannerActive(banner.id, checked)}
                                     />
-                                    <span className="text-xs text-muted-foreground">{banner.active ? 'Active' : 'Inactive'}</span>
+                                    <span className="text-xs text-muted-foreground">{banner.active ? 'Aktif' : 'Tidak Aktif'}</span>
                                 </div>
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8"
                                     onClick={() => {
-                                        if (confirm('Are you sure you want to delete this banner?')) {
+                                        if (confirm('Apakah Anda yakin ingin menghapus banner ini?')) {
                                             deleteBanner(banner.id);
                                         }
                                     }}

@@ -25,8 +25,8 @@ import { z } from 'zod';
 import Link from 'next/link';
 
 const loginSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  email: z.string().email({ message: 'Alamat email tidak valid' }),
+  password: z.string().min(6, { message: 'Kata sandi harus minimal 6 karakter' }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -63,7 +63,7 @@ export function LoginForm({
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        setError('Email atau kata sandi tidak valid');
         setLoading(false);
       } else {
         router.push(callbackUrl);
@@ -71,7 +71,7 @@ export function LoginForm({
       }
     } catch (err) {
       console.error(err);
-      setError('An unexpected error occurred');
+      setError('Terjadi kesalahan yang tidak terduga');
       setLoading(false);
     }
   };
@@ -80,9 +80,9 @@ export function LoginForm({
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Masuk ke akun Anda</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Masukkan email Anda di bawah ini untuk masuk ke akun Anda
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -101,12 +101,12 @@ export function LoginForm({
               </Field>
               <Field>
                 <div className="flex items-center justify-between">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">Kata sandi</FieldLabel>
                   <a
                     href="#"
                     className="text-sm text-muted-foreground hover:underline"
                   >
-                    Forgot your password?
+                    Lupa kata sandi Anda?
                   </a>
                 </div>
                 <Input
@@ -123,12 +123,12 @@ export function LoginForm({
                 </div>
               )}
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Logging in...' : 'Login'}
+                {loading ? 'Sedang masuk...' : 'Masuk'}
               </Button>
               <div className="text-center text-sm">
-                Don&apos;t have an account?{' '}
+                Belum punya akun?{' '}
                 <Link href="/register" className="underline underline-offset-4">
-                  Sign up
+                  Daftar
                 </Link>
               </div>
             </FieldGroup>

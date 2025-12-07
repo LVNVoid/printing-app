@@ -30,7 +30,7 @@ export async function createOrder({ userId, items }: CreateOrderParams) {
       });
 
       if (!product) {
-        throw new Error(`Product with ID ${productId} not found`);
+        throw new Error(`Produk dengan ID ${productId} tidak ditemukan`);
       }
 
       total += product.price * quantity;
@@ -65,6 +65,6 @@ export async function createOrder({ userId, items }: CreateOrderParams) {
     return { success: true, order };
   } catch (error) {
     console.error('Error creating order:', error);
-    return { success: false, error: 'Failed to create order' };
+    return { success: false, error: 'Gagal membuat pesanan' };
   }
 }

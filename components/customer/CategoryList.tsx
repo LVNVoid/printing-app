@@ -25,7 +25,7 @@ export async function CategoryList({ activeCategory }: CategoryListProps) {
                     size="sm"
                     className="rounded-full cursor-pointer"
                 >
-                    All
+                    Semua
                 </Button>
             </Link>
             {categories.map((category) => (

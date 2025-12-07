@@ -13,7 +13,7 @@ function SubmitButton() {
     const { pending } = useFormStatus();
     return (
         <Button type="submit" disabled={pending}>
-            {pending ? 'Saving...' : 'Save Changes'}
+            {pending ? 'Menyimpan...' : 'Simpan Perubahan'}
         </Button>
     );
 }
@@ -24,13 +24,13 @@ export function GeneralSettings({ settings }: { settings: StoreSettings | null }
     return (
         <Card>
             <CardHeader>
-                <CardTitle>General Settings</CardTitle>
-                <CardDescription>Manage your store's general information.</CardDescription>
+                <CardTitle>Pengaturan Umum</CardTitle>
+                <CardDescription>Kelola informasi umum toko Anda.</CardDescription>
             </CardHeader>
             <CardContent>
                 <form action={formAction} className="space-y-4 max-w-xl">
                     <div className="space-y-2">
-                        <Label htmlFor="storeName">Store Name</Label>
+                        <Label htmlFor="storeName">Nama Toko</Label>
                         <Input
                             id="storeName"
                             name="storeName"
@@ -39,6 +39,18 @@ export function GeneralSettings({ settings }: { settings: StoreSettings | null }
                         />
                         {state?.error?.storeName && (
                             <p className="text-sm text-red-500">{state.error.storeName[0]}</p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="whatsappNumber">WhatsApp Number</Label>
+                        <Input
+                            id="whatsappNumber"
+                            name="whatsappNumber"
+                            defaultValue={settings?.whatsappNumber || ''}
+                            placeholder="e.g. 6281234567890"
+                        />
+                        {state?.error?.whatsappNumber && (
+                            <p className="text-sm text-red-500">{state.error.whatsappNumber[0]}</p>
                         )}
                     </div>
                     <SubmitButton />

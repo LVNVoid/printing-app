@@ -28,7 +28,7 @@ export function CustomersTableToolbar() {
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
                 <Input
-                    placeholder="Search customers..."
+                    placeholder="Cari pelanggan..."
                     className="max-w-xs"
                     defaultValue={searchParams.get('query')?.toString()}
                     onChange={(e) => handleSearch(e.target.value)}

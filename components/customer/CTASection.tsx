@@ -17,23 +17,23 @@ export function CTASection() {
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                         <div className="max-w-2xl">
                             <h2 className="text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl mb-4">
-                                Ready to bring your ideas to life?
+                                Siap untuk mewujudkan ide Anda?
                             </h2>
                             <p className="text-lg text-primary-foreground/80">
-                                Join thousands of satisfied customers and start your printing journey today.
-                                Get 20% off your first order!
+                                Bergabunglah dengan ribuan pelanggan puas dan mulai perjalanan mencetak Anda hari ini.
+                                Dapatkan diskon 20% untuk pesanan pertama Anda!
                             </p>
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link href="/register">
                                 <Button size="lg" variant="secondary" className="h-14 px-8 text-base font-semibold shadow-lg">
-                                    Get Started Now
+                                    Mulai Sekarang
                                 </Button>
                             </Link>
                             <Link href="/contact">
                                 <Button size="lg" variant="outline" className="h-14 px-8 text-base font-semibold bg-transparent text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/10 hover:text-primary-foreground">
-                                    Contact Sales <ArrowRight className="ml-2 h-4 w-4" />
+                                    Hubungi Penjualan <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
                         </div>

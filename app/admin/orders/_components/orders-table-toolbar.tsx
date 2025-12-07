@@ -48,7 +48,7 @@ export function OrdersTableToolbar() {
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
                 <Input
-                    placeholder="Filter orders..."
+                    placeholder="Filter pesanan..."
                     className="max-w-xs"
                     defaultValue={searchParams.get('query')?.toString()}
                     onChange={(e) => handleSearch(e.target.value)}
@@ -62,12 +62,13 @@ export function OrdersTableToolbar() {
                         <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="ALL">All Status</SelectItem>
-                        <SelectItem value="PENDING">Pending</SelectItem>
-                        <SelectItem value="PAID">Paid</SelectItem>
-                        <SelectItem value="SHIPPED">Shipped</SelectItem>
-                        <SelectItem value="COMPLETED">Completed</SelectItem>
-                        <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                        <SelectItem value="ALL">Semua Status</SelectItem>
+                        <SelectItem value="PENDING">Tertunda</SelectItem>
+                        <SelectItem value="PAID">Dibayar</SelectItem>
+                        <SelectItem value="SHIPPED">Dikirim</SelectItem>
+                        <SelectItem value="COMPLETED">Selesai</SelectItem>
+                        <SelectItem value="CANCELLED">Dibatalkan</SelectItem>
+
                     </SelectContent>
                 </Select>
             </div>

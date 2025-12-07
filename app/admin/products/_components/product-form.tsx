@@ -21,7 +21,7 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
     const { pending } = useFormStatus();
     return (
         <Button type="submit" disabled={pending}>
-            {pending ? (isEditing ? 'Updating...' : 'Creating...') : isEditing ? 'Update Product' : 'Create Product'}
+            {pending ? (isEditing ? 'Memperbarui...' : 'Membuat...') : isEditing ? 'Perbarui Produk' : 'Buat Produk'}
         </Button>
     );
 }
@@ -49,12 +49,12 @@ export function ProductForm({ product }: { product?: ProductWithPictures | null 
     return (
         <form action={formAction} className="space-y-4 max-w-xl">
             <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Nama</Label>
                 <Input id="name" name="name" defaultValue={product?.name} required />
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="price">Price</Label>
+                <Label htmlFor="price">Harga</Label>
                 <Input
                     id="price"
                     name="price"
@@ -66,10 +66,10 @@ export function ProductForm({ product }: { product?: ProductWithPictures | null 
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="categoryId">Category</Label>
+                <Label htmlFor="categoryId">Kategori</Label>
                 <Select name="categoryId" defaultValue={product?.categoryId || undefined}>
                     <SelectTrigger id="categoryId">
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder="Pilih kategori" />
                     </SelectTrigger>
                     <SelectContent>
                         {categories.map((category) => (
@@ -82,12 +82,12 @@ export function ProductForm({ product }: { product?: ProductWithPictures | null 
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Deskripsi</Label>
                 <Input id="description" name="description" defaultValue={product?.description || ''} />
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="images">Images (Max 2MB each)</Label>
+                <Label htmlFor="images">Gambar (Maksimal 2MB per gambar)</Label>
                 <Input
                     id="images"
                     name="images"
@@ -99,7 +99,7 @@ export function ProductForm({ product }: { product?: ProductWithPictures | null 
                         const invalidFiles = files.filter(file => file.size > 2 * 1024 * 1024);
 
                         if (invalidFiles.length > 0) {
-                            alert(`Some files exceed the 2MB limit: ${invalidFiles.map(f => f.name).join(', ')}`);
+                            alert(`Beberapa file melebihi batas 2MB: ${invalidFiles.map(f => f.name).join(', ')}`);
                             e.target.value = '';
                             setPreviewUrls([]);
                         } else {
@@ -126,7 +126,7 @@ export function ProductForm({ product }: { product?: ProductWithPictures | null 
             <div className="flex gap-4">
                 <SubmitButton isEditing={isEditing} />
                 <Button variant="outline" type="button" onClick={() => window.history.back()}>
-                    Cancel
+                    Batal
                 </Button>
             </div>
         </form>

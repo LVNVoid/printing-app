@@ -66,7 +66,7 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
                 href={`/products/${product.slug}`}
                 className="block"
                 prefetch={false}
-                aria-label={`View ${product.name}`}
+                aria-label={`Lihat ${product.name}`}
             >
                 <div className="relative w-full overflow-hidden bg-muted rounded-t-lg aspect-square">
                     {hasImages ? (
@@ -113,7 +113,7 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
 
                 <div className="flex items-center justify-between pt-2 gap-3">
                     <div className="flex-1">
-                        <p className="text-xs text-muted-foreground mb-0.5">Price</p>
+                        <p className="text-xs text-muted-foreground mb-0.5">Harga</p>
                         <p className="text-lg font-bold text-foreground">
                             {formattedPrice}
                         </p>
@@ -124,7 +124,7 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
                         className="h-10 px-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
                         onClick={handleAddToCart}
                         disabled={isPending}
-                        aria-label={`Add ${product.name} to cart`}
+                        aria-label={`Tambah ${product.name} ke keranjang`}
                     >
                         {isPending ? (
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />

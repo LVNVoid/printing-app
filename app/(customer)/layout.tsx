@@ -4,6 +4,7 @@ import { CartProvider } from '@/components/customer/CartContext';
 import { CartSheet } from '@/components/customer/CartSheet';
 
 import { getStoreSettings } from '@/app/admin/settings/actions';
+import { WhatsAppButton } from '@/components/WhatsAppButton';
 
 export default async function CustomerLayout({
     children,
@@ -20,6 +21,7 @@ export default async function CustomerLayout({
                 <main className="flex-1">{children}</main>
                 <Footer />
                 <CartSheet />
+                <WhatsAppButton phoneNumber={settings?.whatsappNumber} />
             </div>
         </CartProvider>
     );

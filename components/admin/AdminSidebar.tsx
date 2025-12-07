@@ -17,27 +17,27 @@ const sidebarItems = [
         icon: LayoutDashboard,
     },
     {
-        title: "Products",
+        title: "Produk",
         href: "/admin/products",
         icon: Package,
     },
     {
-        title: "Categories",
+        title: "Kategori",
         href: "/admin/categories",
         icon: Package,
     },
     {
-        title: "Orders",
+        title: "Pesanan",
         href: "/admin/orders",
         icon: ShoppingCart,
     },
     {
-        title: "Customers",
+        title: "Data Pelanggan",
         href: "/admin/customers",
         icon: Users,
     },
     {
-        title: "Settings",
+        title: "Pengaturan",
         href: "/admin/settings",
         icon: Settings,
     },
@@ -76,7 +76,7 @@ export function AdminSidebar({ storeName }: { storeName?: string }) {
                         onClick={() => setSidebarOpen(false)}
                     >
                         <X className="h-5 w-5" />
-                        <span className="sr-only">Close sidebar</span>
+                        <span className="sr-only">Tutup sidebar</span>
                     </Button>
                 </div>
 

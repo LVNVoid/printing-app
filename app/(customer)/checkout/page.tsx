@@ -26,14 +26,14 @@ function CheckoutContent() {
     }, [status, router]);
 
     if (status === 'loading') {
-        return <div className="container py-10">Loading...</div>;
+        return <div className="container py-10">Memuat...</div>;
     }
 
     if (items.length === 0) {
         return (
             <div className="container py-10 text-center">
-                <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
-                <Button onClick={() => router.push('/products')}>Go to Products</Button>
+                <h1 className="text-2xl font-bold mb-4">Keranjang Anda kosong</h1>
+                <Button onClick={() => router.push('/products')}>Lihat Produk</Button>
             </div>
         );
     }
@@ -53,14 +53,14 @@ function CheckoutContent() {
 
             if (result.success) {
                 clearCart();
-                toast.success('Order placed successfully! Redirecting to your orders...');
+                toast.success('Pesanan berhasil dibuat! Mengalihkan ke pesanan Anda...');
                 router.push('/orders');
             } else {
-                toast.error(result.error || 'Failed to place order');
+                toast.error(result.error || 'Gagal membuat pesanan');
             }
         } catch (error) {
             console.error(error);
-            toast.error('An unexpected error occurred');
+            toast.error('Terjadi kesalahan yang tidak terduga');
         } finally {
             setIsSubmitting(false);
         }
@@ -73,7 +73,7 @@ function CheckoutContent() {
             <div className="grid md:grid-cols-3 gap-8">
                 <div className="md:col-span-2 space-y-4">
                     <div className="border rounded-lg p-6 space-y-4">
-                        <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+                        <h2 className="text-xl font-semibold mb-4">Ringkasan Pesanan</h2>
                         {items.map((item) => (
                             <div key={item.product.id} className="flex gap-4 py-2 border-b last:border-0">
                                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border bg-secondary/20">
@@ -86,7 +86,7 @@ function CheckoutContent() {
                                         />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                                            No Image
+                                            Tidak Ada Gambar
                                         </div>
                                     )}
                                 </div>
@@ -123,10 +123,10 @@ function CheckoutContent() {
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Processing...
+                                    Memproses...
                                 </>
                             ) : (
-                                'Place Order'
+                                'Buat Pesanan'
                             )}
                         </Button>
                     </div>

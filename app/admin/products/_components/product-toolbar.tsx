@@ -46,7 +46,7 @@ export function ProductToolbar({ categories }: ProductToolbarProps) {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-1 items-center gap-4">
                 <Input
-                    placeholder="Search products..."
+                    placeholder="Cari produk..."
                     className="max-w-xs"
                     defaultValue={searchParams.get('query')?.toString()}
                     onChange={(e) => handleSearch(e.target.value)}
@@ -56,10 +56,10 @@ export function ProductToolbar({ categories }: ProductToolbarProps) {
                     onValueChange={handleCategoryChange}
                 >
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Filter by category" />
+                        <SelectValue placeholder="Filter berdasarkan kategori" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="all">Semua Kategori</SelectItem>
                         {categories.map((category) => (
                             <SelectItem key={category.id} value={category.id}>
                                 {category.name}

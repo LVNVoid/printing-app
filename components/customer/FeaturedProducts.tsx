@@ -22,11 +22,11 @@ export async function FeaturedProducts() {
                 <div className="flex flex-col gap-6 mb-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <h2 className="text-2xl font-bold tracking-tight">
-                            Recommended For You
+                            Rekomendasi Untuk Anda
                         </h2>
                         <Link href="/products">
                             <Button variant="ghost" className="gap-2">
-                                View All Products
+                                Lihat Semua Produk
                                 <ArrowRight className="h-4 w-4" />
                             </Button>
                         </Link>
@@ -41,7 +41,7 @@ export async function FeaturedProducts() {
                     </div>
                 ) : (
                     <div className="text-center py-20 bg-secondary/10 rounded-3xl">
-                        <p className="text-xl text-muted-foreground">No products found. Please check back later.</p>
+                        <p className="text-xl text-muted-foreground">Tidak ada produk ditemukan. Silakan cek kembali nanti.</p>
                     </div>
                 )}
             </div>

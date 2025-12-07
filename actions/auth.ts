@@ -21,10 +21,10 @@ export async function SignUp(
 
   if (exists) {
     if (exists.email === email) {
-      return { error: 'Email already registered' };
+      return { error: 'Email sudah terdaftar' };
     }
     if (exists.phoneNumber === phoneNumber) {
-      return { error: 'Phone number already registered' };
+      return { error: 'Nomor telepon sudah terdaftar' };
     }
   }
 

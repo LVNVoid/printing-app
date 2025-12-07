@@ -43,25 +43,25 @@ export default async function CustomersAdminPage({ searchParams }: CustomersAdmi
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Customers</h1>
+            <h1 className="text-3xl font-bold">Pelanggan</h1>
             <CustomersTableToolbar />
             <div className="rounded-md border bg-card">
                 <Table className="w-full caption-bottom text-sm">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</TableHead>
+                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nama</TableHead>
                             <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</TableHead>
-                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Phone Number</TableHead>
-                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Role</TableHead>
-                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Joined Date</TableHead>
-                            <TableHead className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</TableHead>
+                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nomor Telepon</TableHead>
+                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Peran</TableHead>
+                            <TableHead className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Tanggal Bergabung</TableHead>
+                            <TableHead className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {customers.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="p-4 text-center text-muted-foreground">
-                                    No customers found.
+                                    Tidak ada pelanggan ditemukan.
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -76,16 +76,16 @@ export default async function CustomersAdminPage({ searchParams }: CustomersAdmi
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
+                                                    <span className="sr-only">Buka menu</span>
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                                                 <DropdownMenuItem asChild>
                                                     <Link href={`/admin/customers/${customer.id}`}>
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        View
+                                                        Lihat
                                                     </Link>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>

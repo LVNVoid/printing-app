@@ -24,20 +24,20 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold">Customer Details</h1>
+                <h1 className="text-3xl font-bold">Detail Pelanggan</h1>
                 <Button asChild variant="outline">
-                    <Link href="/admin/customers">Back to Customers</Link>
+                    <Link href="/admin/customers">Kembali ke Pelanggan</Link>
                 </Button>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Profile Information</CardTitle>
+                        <CardTitle>Informasi Profil</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2">
                         <div className="flex justify-between">
-                            <span className="font-medium">Name:</span>
+                            <span className="font-medium">Nama:</span>
                             <span>{customer.name}</span>
                         </div>
                         <div className="flex justify-between">
@@ -45,15 +45,15 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                             <span>{customer.email}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="font-medium">Role:</span>
+                            <span className="font-medium">Peran:</span>
                             <span>{customer.role}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="font-medium">User ID:</span>
+                            <span className="font-medium">ID Pengguna:</span>
                             <span className="text-muted-foreground text-sm">{customer.id}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="font-medium">Joined:</span>
+                            <span className="font-medium">Bergabung:</span>
                             <span>{formatDate(customer.createdAt)}</span>
                         </div>
                     </CardContent>
@@ -61,15 +61,15 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Summary</CardTitle>
+                        <CardTitle>Ringkasan</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2">
                         <div className="flex justify-between">
-                            <span className="font-medium">Total Orders:</span>
+                            <span className="font-medium">Total Pesanan:</span>
                             <span>{customer.orders.length}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="font-medium">Total Spent:</span>
+                            <span className="font-medium">Total Pengeluaran:</span>
                             <span>
                                 {formatCurrency(
                                     customer.orders.reduce((acc, order) => acc + order.total, 0)
@@ -81,17 +81,17 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
             </div>
 
             <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Order History</h2>
+                <h2 className="text-2xl font-bold">Riwayat Pesanan</h2>
                 <div className="rounded-md border">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Order ID</TableHead>
-                                <TableHead>Date</TableHead>
+                                <TableHead>ID Pesanan</TableHead>
+                                <TableHead>Tanggal</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Items</TableHead>
+                                <TableHead>Item</TableHead>
                                 <TableHead className="text-right">Total</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead className="text-right">Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -102,14 +102,14 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                                     </TableCell>
                                     <TableCell>{formatDate(order.createdAt)}</TableCell>
                                     <TableCell>{order.status}</TableCell>
-                                    <TableCell>{order.items.length} items</TableCell>
+                                    <TableCell>{order.items.length} item</TableCell>
                                     <TableCell className="text-right">
                                         {formatCurrency(order.total)}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <Button asChild variant="ghost" size="sm">
                                             <Link href={`/admin/orders/${order.id}`}>
-                                                View Order
+                                                Lihat Pesanan
                                             </Link>
                                         </Button>
                                     </TableCell>
@@ -118,7 +118,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
                             {customer.orders.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                                        No orders found.
+                                        Tidak ada pesanan ditemukan.
                                     </TableCell>
                                 </TableRow>
                             )}

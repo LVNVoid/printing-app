@@ -20,27 +20,27 @@ export default async function DashboardAdminPage() {
 
   const statCards = [
     {
-      title: "Total Revenue",
+      title: "Total Pendapatan Bulan Ini",
       value: formatCurrency(stats.totalRevenue),
-      description: "Lifetime revenue",
+      description: "Total pendapatan",
       icon: DollarSign,
     },
     {
-      title: "Total Orders",
+      title: "Total Pesanan Bulan Ini",
       value: stats.totalOrders,
-      description: "Orders placed",
+      description: "Pesanan masuk",
       icon: ShoppingCart,
     },
     {
-      title: "Total Products",
+      title: "Total Produk",
       value: stats.totalProducts,
-      description: "Active products",
+      description: "Produk aktif",
       icon: Package,
     },
     {
-      title: "Total Customers",
+      title: "Total Pelanggan",
       value: stats.totalCustomers,
-      description: "Registered customers",
+      description: "Pelanggan terdaftar",
       icon: Users,
     },
   ];
@@ -49,20 +49,20 @@ export default async function DashboardAdminPage() {
     {
       href: "/admin/products/new",
       icon: Package,
-      label: "Add New Product",
-      description: "Create a new product"
+      label: "Tambah Produk Baru",
+      description: "Tambah produk baru"
     },
     {
       href: "/admin/categories",
       icon: CreditCard,
-      label: "Manage Categories",
-      description: "Organize product categories"
+      label: "Kategori",
+      description: "Kelola kategori produk"
     },
     {
       href: "/admin/orders",
       icon: ShoppingCart,
-      label: "View All Orders",
-      description: "Manage all orders"
+      label: "Pesanan",
+      description: "Kelola pesanan"
     },
   ];
 
@@ -72,7 +72,7 @@ export default async function DashboardAdminPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-1">Welcome back! Here's your store overview.</p>
+          <p className="text-sm text-muted-foreground mt-1">Selamat datang di dashboard admin</p>
         </div>
       </div>
 
@@ -105,12 +105,12 @@ export default async function DashboardAdminPage() {
           <CardHeader className="border-b">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Recent Orders</CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">Latest transactions from customers</p>
+                <CardTitle>Pesanan Terbaru</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">Pesanan terbaru dari pelanggan</p>
               </div>
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/admin/orders">
-                  View All →
+                  Lihat Semua →
                 </Link>
               </Button>
             </div>
@@ -119,7 +119,7 @@ export default async function DashboardAdminPage() {
             {stats.recentOrders.length === 0 ? (
               <div className="text-center py-12">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">No orders found.</p>
+                <p className="text-sm text-muted-foreground">Tidak ada pesanan ditemukan.</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -155,8 +155,8 @@ export default async function DashboardAdminPage() {
         {/* Quick Actions - Takes 1 column */}
         <Card>
           <CardHeader className="border-b">
-            <CardTitle>Quick Actions</CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">Manage your store quickly</p>
+            <CardTitle>Aksi Cepat</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">Kelola dengan cepat</p>
           </CardHeader>
           <CardContent className="pt-6 space-y-3">
             {quickActions.map((action, index) => (

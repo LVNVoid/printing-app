@@ -10,13 +10,13 @@ export default async function SettingsAdminPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Pengaturan</h1>
             </div>
 
             <Tabs defaultValue="general" className="space-y-4">
                 <TabsList>
-                    <TabsTrigger value="general">General</TabsTrigger>
-                    <TabsTrigger value="banners">Banners</TabsTrigger>
+                    <TabsTrigger value="general">Umum</TabsTrigger>
+                    <TabsTrigger value="banners">Banner</TabsTrigger>
                 </TabsList>
                 <TabsContent value="general" className="space-y-4">
                     <GeneralSettings settings={settings} />

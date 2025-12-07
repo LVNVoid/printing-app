@@ -25,30 +25,30 @@ export function AdminHeader() {
                 onClick={() => setSidebarOpen(true)}
             >
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle sidebar</span>
+                <span className="sr-only">Buka sidebar</span>
             </Button>
 
             <div className="flex flex-1 items-center justify-end gap-4">
                 <ModeToggle />
                 <Button variant="ghost" size="icon">
                     <Bell className="h-5 w-5" />
-                    <span className="sr-only">Notifications</span>
+                    <span className="sr-only">Notifikasi</span>
                 </Button>
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="rounded-full">
                             <User className="h-5 w-5" />
-                            <span className="sr-only">User menu</span>
+                            <span className="sr-only">Menu pengguna</span>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Settings</DropdownMenuItem>
-                        <DropdownMenuItem>Support</DropdownMenuItem>
+                        <DropdownMenuItem>Pengaturan</DropdownMenuItem>
+                        <DropdownMenuItem>Bantuan</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Logout</DropdownMenuItem>
+                        <DropdownMenuItem>Keluar</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

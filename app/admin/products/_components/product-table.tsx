@@ -47,19 +47,19 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                     <table className="w-full caption-bottom text-sm">
                         <thead className="[&_tr]:border-b">
                             <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Image</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Category</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Price</th>
-                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Description</th>
-                                <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Actions</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground"></th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nama Produk</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Kategori</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Harga</th>
+                                <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Deskripsi</th>
+                                <th className="h-12 px-4 text-right align-middle font-medium text-muted-foreground"></th>
                             </tr>
                         </thead>
                         <tbody className="[&_tr:last-child]:border-0">
                             {products.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="p-4 text-center text-muted-foreground">
-                                        No products found.
+                                        Tidak ada produk ditemukan.
                                     </td>
                                 </tr>
                             ) : (
@@ -77,7 +77,7 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                                                 </div>
                                             ) : (
                                                 <div className="w-16 h-16 bg-muted rounded flex items-center justify-center text-xs text-muted-foreground">
-                                                    No Img
+                                                    Tidak Ada Gambar
                                                 </div>
                                             )}
                                         </td>
@@ -91,16 +91,16 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <span className="sr-only">Open menu</span>
+                                                        <span className="sr-only">Buka menu</span>
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                                                     <DropdownMenuItem asChild>
                                                         <Link href={`/admin/products/${product.id}`}>
                                                             <Eye className="mr-2 h-4 w-4" />
-                                                            View
+                                                            Lihat
                                                         </Link>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem asChild>
@@ -130,10 +130,10 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                         disabled={currentPage <= 1}
                     >
                         <ChevronLeft className="h-4 w-4" />
-                        Previous
+                        Sebelumnya
                     </Button>
                     <div className="text-sm font-medium">
-                        Page {currentPage} of {totalPages}
+                        Halaman {currentPage} dari {totalPages}
                     </div>
                     <Button
                         variant="outline"
@@ -141,7 +141,7 @@ export function ProductTable({ products, totalPages, currentPage }: ProductTable
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage >= totalPages}
                     >
-                        Next
+                        Berikutnya
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>

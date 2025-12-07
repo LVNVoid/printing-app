@@ -24,16 +24,16 @@ import Link from 'next/link';
 import { SignUp } from '@/actions/auth';
 
 const registerSchema = z.object({
-    name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
-    email: z.string().email({ message: 'Invalid email address' }),
+    name: z.string().min(2, { message: 'Nama harus minimal 2 karakter' }),
+    email: z.string().email({ message: 'Alamat email tidak valid' }),
     phoneNumber: z
         .string()
         .regex(/^(\+62|62|0)8[1-9][0-9]{6,9}$/, {
-            message: 'Invalid Indonesian phone number format',
+            message: 'Format nomor telepon Indonesia tidak valid',
         }),
     password: z
         .string()
-        .min(6, { message: 'Password must be at least 6 characters' }),
+        .min(6, { message: 'Kata sandi harus minimal 6 karakter' }),
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -72,7 +72,7 @@ export function RegisterForm({
 
         } catch (err) {
             console.error(err);
-            setError('An unexpected error occurred');
+            setError('Terjadi kesalahan yang tidak terduga');
         } finally {
             setLoading(false);
         }
@@ -82,16 +82,16 @@ export function RegisterForm({
         <div className={cn('flex flex-col gap-6', className)} {...props}>
             <Card>
                 <CardHeader>
-                    <CardTitle>Create an account</CardTitle>
+                    <CardTitle>Buat akun</CardTitle>
                     <CardDescription>
-                        Enter your details below to create your account
+                        Masukkan detail Anda di bawah ini untuk membuat akun
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FieldGroup>
                             <Field>
-                                <FieldLabel htmlFor="name">Name</FieldLabel>
+                                <FieldLabel htmlFor="name">Nama</FieldLabel>
                                 <Input
                                     id="name"
                                     type="text"
@@ -113,7 +113,7 @@ export function RegisterForm({
                                 <FieldError errors={[{ message: errors.email?.message }]} />
                             </Field>
                             <Field>
-                                <FieldLabel htmlFor="phoneNumber">Phone Number</FieldLabel>
+                                <FieldLabel htmlFor="phoneNumber">Nomor Telepon</FieldLabel>
                                 <Input
                                     id="phoneNumber"
                                     type="tel"
@@ -126,7 +126,7 @@ export function RegisterForm({
                                 />
                             </Field>
                             <Field>
-                                <FieldLabel htmlFor="password">Password</FieldLabel>
+                                <FieldLabel htmlFor="password">Kata sandi</FieldLabel>
                                 <Input
                                     id="password"
                                     type="password"
@@ -141,12 +141,12 @@ export function RegisterForm({
                                 </div>
                             )}
                             <Button type="submit" className="w-full" disabled={loading}>
-                                {loading ? 'Creating account...' : 'Sign Up'}
+                                {loading ? 'Sedang membuat akun...' : 'Daftar'}
                             </Button>
                             <div className="text-center text-sm">
-                                Already have an account?{' '}
+                                Sudah punya akun?{' '}
                                 <Link href="/login" className="underline underline-offset-4">
-                                    Login
+                                    Masuk
                                 </Link>
                             </div>
                         </FieldGroup>

@@ -22,7 +22,7 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
     const { pending } = useFormStatus();
     return (
         <Button type="submit" disabled={pending}>
-            {pending ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Category' : 'Create Category')}
+            {pending ? (isEditing ? 'Memperbarui...' : 'Membuat...') : (isEditing ? 'Perbarui Kategori' : 'Buat Kategori')}
         </Button>
     );
 }
@@ -46,7 +46,7 @@ export function CategoryDialog({ category, open: controlledOpen, onOpenChange: c
 
     useEffect(() => {
         if (state?.success) {
-            toast.success(isEditing ? 'Category updated' : 'Category created');
+            toast.success(isEditing ? 'Kategori diperbarui' : 'Kategori dibuat');
             onOpenChange(false);
         }
     }, [state, isEditing, onOpenChange]);
@@ -61,20 +61,20 @@ export function CategoryDialog({ category, open: controlledOpen, onOpenChange: c
                     </Button>
                 ) : (
                     <Button>
-                        Add Category
+                        Tambah Kategori
                     </Button>
                 ))}
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-card">
                 <DialogHeader>
-                    <DialogTitle>{isEditing ? 'Edit Category' : 'Create Category'}</DialogTitle>
+                    <DialogTitle>{isEditing ? 'Edit Kategori' : 'Buat Kategori'}</DialogTitle>
                     <DialogDescription>
-                        {isEditing ? 'Update the category details below.' : 'Add a new category to your store.'}
+                        {isEditing ? 'Perbarui detail kategori di bawah ini.' : 'Tambahkan kategori baru ke toko Anda.'}
                     </DialogDescription>
                 </DialogHeader>
                 <form action={formAction} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">Nama</Label>
                         <Input
                             id="name"
                             name="name"

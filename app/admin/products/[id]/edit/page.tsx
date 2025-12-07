@@ -12,7 +12,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
     return (
         <div className="space-y-6">
-            <h1 className="text-2xl font-bold">Edit Product</h1>
+            <h1 className="text-2xl font-bold">Edit Produk</h1>
             <div className="rounded-md border bg-card p-6">
                 <ProductForm product={product} />
             </div>

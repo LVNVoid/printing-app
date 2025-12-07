@@ -8,30 +8,30 @@ export function Hero() {
             <div className="container relative z-10 flex flex-col items-center text-center">
                 <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary mb-8">
                     <Sparkles className="h-4 w-4 mr-2 fill-primary" />
-                    <span>Premium Printing Services</span>
+                    <span>Layanan Percetakan Premium</span>
                 </div>
 
                 <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6 max-w-4xl">
-                    Bring Your <br className="hidden md:block" />
+                    Wujudkan <br className="hidden md:block" />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
-                        Vision to Life
+                        Visi Anda
                     </span>
                 </h1>
 
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mb-10">
-                    Experience the perfect blend of quality, speed, and creativity.
-                    We transform your digital designs into stunning physical reality.
+                    Rasakan perpaduan sempurna antara kualitas, kecepatan, dan kreativitas.
+                    Kami mengubah desain digital Anda menjadi realitas fisik yang memukau.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-12">
                     <Link href="/services">
                         <Button size="lg" className="h-12 px-8 text-base rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all w-full sm:w-auto">
-                            Start Printing <ArrowRight className="ml-2 h-4 w-4" />
+                            Mulai Mencetak <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                     </Link>
                     <Link href="/contact">
                         <Button variant="outline" size="lg" className="h-12 px-8 text-base rounded-full border-2 hover:bg-secondary/50 w-full sm:w-auto">
-                            Get a Quote
+                            Dapatkan Penawaran
                         </Button>
                     </Link>
                 </div>
@@ -39,15 +39,15 @@ export function Hero() {
                 <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-green-500" />
-                        <span>24h Turnaround</span>
+                        <span>Selesai 24 Jam</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-green-500" />
-                        <span>Eco-friendly</span>
+                        <span>Ramah Lingkungan</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-green-500" />
-                        <span>Satisfaction Guarantee</span>
+                        <span>Jaminan Kepuasan</span>
                     </div>
                 </div>
 

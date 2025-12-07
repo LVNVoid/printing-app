@@ -21,7 +21,7 @@ export async function updateProfile(
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user?.email) {
-    return { success: false, error: 'Unauthorized' };
+    return { success: false, error: 'Tidak terotorisasi' };
   }
 
   const name = formData.get('name');
@@ -52,7 +52,7 @@ export async function updateProfile(
   });
 
   if (!user) {
-    return { success: false, error: 'User not found' };
+    return { success: false, error: 'Pengguna tidak ditemukan' };
   }
 
   // Check uniqueness for email and phone number if changed
@@ -61,7 +61,7 @@ export async function updateProfile(
       where: { email: data.email },
     });
     if (existingEmail) {
-      return { success: false, error: 'Email already registered' };
+      return { success: false, error: 'Email sudah terdaftar' };
     }
   }
 
@@ -70,7 +70,7 @@ export async function updateProfile(
       where: { phoneNumber: data.phoneNumber },
     });
     if (existingPhone) {
-      return { success: false, error: 'Phone number already registered' };
+      return { success: false, error: 'Nomor telepon sudah terdaftar' };
     }
   }
 

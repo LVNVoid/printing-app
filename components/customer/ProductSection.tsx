@@ -91,7 +91,7 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
     ]);
 
     const [products, totalCount] = productsData;
-    const categoryName = categoryData?.name || 'All Products';
+    const categoryName = categoryData?.name || 'Semua Produk';
     const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
     const createPageUrl = (newPage: number) => {
@@ -144,11 +144,11 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
                 <div className="flex flex-col gap-6 mb-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <h2 className="text-2xl font-bold tracking-tight">
-                            {search ? `Search Results for "${search}"` : categoryName}
+                            {search ? `Hasil Pencarian untuk "${search}"` : categoryName}
                         </h2>
                         {totalCount > 0 && (
                             <p className="text-sm text-muted-foreground">
-                                Showing {((page - 1) * PAGE_SIZE) + 1}-{Math.min(page * PAGE_SIZE, totalCount)} of {totalCount} products
+                                Menampilkan {((page - 1) * PAGE_SIZE) + 1}-{Math.min(page * PAGE_SIZE, totalCount)} dari {totalCount} produk
                             </p>
                         )}
                     </div>
@@ -164,7 +164,7 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
                 ) : (
                     <div className="text-center py-20 bg-secondary/10 rounded-3xl">
                         <p className="text-xl text-muted-foreground">
-                            {search ? `No products found for "${search}"` : 'No products found. Please check back later.'}
+                            {search ? `Tidak ada produk ditemukan untuk "${search}"` : 'Tidak ada produk ditemukan. Silakan cek kembali nanti.'}
                         </p>
                     </div>
                 )}

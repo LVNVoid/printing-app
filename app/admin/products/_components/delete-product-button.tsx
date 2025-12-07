@@ -24,18 +24,18 @@ export function DeleteProductMenuItem({ id }: { id: string }) {
             <AlertDialogTrigger asChild>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600 focus:text-red-600">
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
+                    Hapus
                 </DropdownMenuItem>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the product from our servers.
+                        Tindakan ini tidak dapat dibatalkan. Ini akan menghapus produk secara permanen dari server kami.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>Batal</AlertDialogCancel>
                     <AlertDialogAction
                         onClick={() => {
                             startTransition(async () => {
@@ -43,7 +43,7 @@ export function DeleteProductMenuItem({ id }: { id: string }) {
                             });
                         }}
                     >
-                        Continue
+                        Lanjutkan
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

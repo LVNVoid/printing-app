@@ -35,6 +35,6 @@ export default async function ProfilePage() {
         );
     } catch (error) {
         console.error('Error fetching user profile:', error);
-        return <div>Error loading profile. Please try again later.</div>;
+        return <div>Gagal memuat profil. Silakan coba lagi nanti.</div>;
     }
 }
