@@ -68,3 +68,35 @@ export async function createOrder({ userId, items }: CreateOrderParams) {
     return { success: false, error: 'Gagal membuat pesanan' };
   }
 }
+
+export async function getUserOrders(userId: string, statuses?: string[]) {
+  try {
+    const whereClause: any = {
+      userId,
+    };
+
+    if (statuses && statuses.length > 0) {
+      whereClause.status = {
+        in: statuses,
+      };
+    }
+
+    const orders = await prisma.order.findMany({
+      where: whereClause,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+    return orders;
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    return [];
+  }
+}

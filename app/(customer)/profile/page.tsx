@@ -29,7 +29,7 @@ export default async function ProfilePage() {
         };
 
         return (
-            <div className="container py-10 px-5">
+            <div className="container py-10">
                 <ProfileForm user={plainUser} />
             </div>
         );

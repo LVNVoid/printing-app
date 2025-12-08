@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const HomePage = async () => {
 
   return (
-    <div className="py-4 mx-4 lg:mx-0 lg:py-8">
+    <div className="py-4 lg:py-8">
       <BannerSection />
       <FeaturedProducts />
     </div>

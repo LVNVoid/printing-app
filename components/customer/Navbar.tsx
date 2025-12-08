@@ -153,18 +153,19 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                             </div>
                                         </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
+                                        {session.user.role === 'ADMIN' && (
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/admin/dashboard" className="cursor-pointer">
+                                                    Dashboard Admin
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        )}
                                         <DropdownMenuItem asChild>
                                             <Link href="/profile" className="cursor-pointer">
                                                 Profil
                                             </Link>
                                         </DropdownMenuItem>
-                                        {session.user.role === 'ADMIN' && (
-                                            <DropdownMenuItem asChild>
-                                                <Link href="/admin/dashboard" className="cursor-pointer">
-                                                    Dasbor Admin
-                                                </Link>
-                                            </DropdownMenuItem>
-                                        )}
+
                                         <DropdownMenuItem asChild>
                                             <Link href="/orders" className="cursor-pointer">
                                                 Pesanan Saya

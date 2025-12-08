@@ -18,7 +18,7 @@ export default async function CustomerLayout({
         <CartProvider>
             <div className="flex min-h-screen flex-col max-w-7xl mx-auto">
                 <Navbar storeName={storeName} />
-                <main className="flex-1">{children}</main>
+                <main className="flex-1 mx-2">{children}</main>
                 <Footer />
                 <CartSheet />
                 <WhatsAppButton phoneNumber={settings?.whatsappNumber} />

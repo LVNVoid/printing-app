@@ -3,7 +3,7 @@ import { Printer, Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'luci
 
 export function Footer() {
     return (
-        <footer className="w-full border-t bg-background/50 backdrop-blur-sm px-5">
+        <footer className="w-full border-t bg-background/50 backdrop-blur-sm px-2">
             <div className="container py-12 md:py-20">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <div className="space-y-6">

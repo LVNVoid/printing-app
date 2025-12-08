@@ -16,18 +16,18 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
-export default async function OrdersPage() {
+export default async function OrderHistoryPage() {
     const session = await getServerSession(authOptions);
 
     if (!session?.user) {
         redirect('/login');
     }
 
-    const orders = await getUserOrders(session.user.id, ['PENDING', 'PAID', 'SHIPPED']);
+    const orders = await getUserOrders(session.user.id, ['COMPLETED', 'CANCELLED']);
 
     return (
         <div className="container py-10">
-            <h1 className="text-3xl font-bold mb-8">Pesanan Saya</h1>
+            <h1 className="text-3xl font-bold mb-8">Riwayat Pesanan</h1>
 
             <OrderToolbar />
 
@@ -66,7 +66,7 @@ export default async function OrdersPage() {
                 </div>
             ) : (
                 <div className="text-center py-20 border rounded-lg bg-secondary/10">
-                    <p className="text-muted-foreground">Tidak ada pesanan yang sedang berjalan.</p>
+                    <p className="text-muted-foreground">Tidak ada riwayat pesanan.</p>
                 </div>
             )}
         </div>
