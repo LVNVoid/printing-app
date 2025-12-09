@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -58,6 +58,19 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.image = user.image;
       }
+      
+      if (trigger === "update") {
+        const refreshedUser = await prisma.user.findUnique({
+            where: { id: token.id as string }
+        });
+        if (refreshedUser) {
+            token.name = refreshedUser.name;
+            token.email = refreshedUser.email;
+            token.image = refreshedUser.profileUrl;
+            token.role = refreshedUser.role;
+        }
+      }
+      
       return token;
     },
     async session({ session, token }) {

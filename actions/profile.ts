@@ -29,6 +29,7 @@ export async function updateProfile(
   const phoneNumber = formData.get('phoneNumber');
   const password = formData.get('password');
   const file = formData.get('image') as File | null;
+  const deleteImage = formData.get('deleteImage') === 'true';
 
   const parsed = ProfileSchema.safeParse({
     name,
@@ -105,6 +106,16 @@ export async function updateProfile(
 
     imageUrl = uploaded.secure_url;
     imagePublicId = uploaded.public_id;
+  } else if (deleteImage) {
+      if (imagePublicId) {
+          try {
+              await cloudinary.uploader.destroy(imagePublicId);
+          } catch (error) {
+              console.error('Failed to delete profile image from Cloudinary:', error);
+          }
+      }
+      imageUrl = null;
+      imagePublicId = null;
   }
 
   const updateData: any = {

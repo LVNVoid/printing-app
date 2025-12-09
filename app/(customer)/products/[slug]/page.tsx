@@ -1,11 +1,11 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { Metadata } from 'next';
 import { AddToCartButton } from '@/components/customer/AddToCartButton';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
+import { ProductImageGallery } from '@/components/customer/ProductImageGallery';
 
 interface ProductPageProps {
     params: Promise<{
@@ -103,9 +103,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         include: { pictures: true, category: true },
     });
 
-    if (!product) notFound();
 
-    const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
+    if (!product) notFound();
 
     return (
         <div className="container space-y-6 px-4 py-10 md:space-y-8">
@@ -145,16 +144,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
 
                 {/* Product Image */}
-                <div className="relative aspect-square bg-secondary/20 rounded-xl overflow-hidden">
-                    <Image
-                        src={primaryImage}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                        priority
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                </div>
+                <ProductImageGallery images={product.pictures} productName={product.name} />
+
 
                 {/* Product Info */}
                 <div className="flex flex-col gap-6 md:gap-8">

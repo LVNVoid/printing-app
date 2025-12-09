@@ -154,6 +154,7 @@ export async function createProduct(formData: FormData) {
   });
 
   revalidatePath('/admin/products');
+  revalidatePath('/products');
   redirect('/admin/products');
 }
 
@@ -167,6 +168,34 @@ export async function updateProduct(id: string, formData: FormData) {
 
   if (!result.success) {
     return { error: result.error.flatten().fieldErrors };
+  }
+
+  // Handle image deletions
+  const deletedImageIds = formData.getAll('deletedImageIds') as string[];
+  if (deletedImageIds.length > 0) {
+      const imagesToDelete = await prisma.productPicture.findMany({
+          where: {
+              id: { in: deletedImageIds },
+              productId: id, // Ensure images belong to this product
+          }
+      });
+
+      for (const image of imagesToDelete) {
+          if (image.imagePublicId) {
+              try {
+                  await cloudinary.uploader.destroy(image.imagePublicId);
+              } catch (error) {
+                  console.error(`Failed to delete image from Cloudinary: ${image.imagePublicId}`, error);
+              }
+          }
+      }
+
+      await prisma.productPicture.deleteMany({
+          where: {
+              id: { in: deletedImageIds },
+              productId: id,
+          }
+      });
   }
 
   for (const file of files) {
@@ -203,6 +232,7 @@ export async function updateProduct(id: string, formData: FormData) {
 
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/${id}`);
+  revalidatePath('/products');
   redirect('/admin/products');
 }
 
@@ -230,4 +260,5 @@ export async function deleteProduct(id: string) {
   });
 
   revalidatePath('/admin/products');
+  revalidatePath('/products');
 }

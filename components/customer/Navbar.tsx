@@ -48,7 +48,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                             <Printer className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
                         </div>
                         <span className="text-base sm:text-xl font-bold tracking-tight hidden xs:inline">
-                            PrintMaster
+                            Foman Printing
                         </span>
                     </Link>
 
@@ -65,6 +65,18 @@ export function Navbar({ storeName }: { storeName?: string }) {
                             className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/products') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
                         >
                             Produk
+                        </Link>
+                        <Link
+                            href="/about"
+                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/about' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
+                        >
+                            Tentang Kami
+                        </Link>
+                        <Link
+                            href="/contact"
+                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/contact' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
+                        >
+                            Kontak
                         </Link>
                         {session && (
                             <Link
@@ -245,6 +257,20 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                             >
                                                 Produk
                                             </Link>
+                                            <Link
+                                                href="/about"
+                                                onClick={() => setIsOpen(false)}
+                                                className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname === '/about' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
+                                            >
+                                                Tentang Kami
+                                            </Link>
+                                            <Link
+                                                href="/contact"
+                                                onClick={() => setIsOpen(false)}
+                                                className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname === '/contact' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
+                                            >
+                                                Kontak
+                                            </Link>
                                             {mounted && session && (
                                                 <>
                                                     {session.user.role === 'ADMIN' && (
@@ -314,16 +340,16 @@ export function Navbar({ storeName }: { storeName?: string }) {
                         </div>
                     </div>
                 </div>
-
-                {/* Mobile Search Bar (Collapsible) */}
-                {showSearch && (
-                    <div className="lg:hidden pb-3 pt-2 animate-in slide-in-from-top-2">
-                        <Suspense fallback={null}>
-                            <SearchInput autoFocus />
-                        </Suspense>
-                    </div>
-                )}
             </div>
+
+            {/* Mobile Search Bar (Collapsible) */}
+            {showSearch && (
+                <div className="lg:hidden pb-3 pt-2 animate-in slide-in-from-top-2">
+                    <Suspense fallback={null}>
+                        <SearchInput autoFocus />
+                    </Suspense>
+                </div>
+            )}
         </header>
     );
 }

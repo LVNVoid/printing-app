@@ -107,9 +107,15 @@ model Banner {
 }
 
 model StoreSettings {
-  id             String   @id @default(uuid())
-  storeName      String   @default("My Store")
-  whatsappNumber String   @default("6281234567890")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                 String   @id @default(uuid())
+  storeName          String   @default("My Store")
+  whatsappNumber     String   @default("6281234567890")
+  contactEmail       String?  @default("info@example.com")
+  contactPhone       String?  @default("+62 21 1234 5678")
+  contactAddress     String?  @default("Jl. Contoh No. 123, Jakarta")
+  googleMapsEmbedUrl String?
+  openDays           String   @default("Senin - Jumat")
+  openHours          String   @default("08:00 - 17:00")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Banner } from '@/app/generated/prisma/client';
-import { createBanner, deleteBanner, toggleBannerActive } from '../actions';
+import { createBanner, deleteBanner, toggleBannerActive } from '@/actions/banner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch';
 import { useFormStatus } from 'react-dom';
 import { Trash2, ExternalLink } from 'lucide-react';
+import { toast } from 'sonner';
+import Image from 'next/image';
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -20,8 +22,52 @@ function SubmitButton() {
     );
 }
 
-export function BannerManager({ banners }: { banners: Banner[] }) {
+export function BannerManager({ initialBanners }: { initialBanners: Banner[] }) {
+    const [banners, setBanners] = useState<Banner[]>(initialBanners);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+        setBanners(initialBanners);
+    }, [initialBanners]);
+
+    async function handleAction(formData: FormData) {
+        const res = await createBanner(formData);
+        if (res.success && res.banner) {
+            toast.success(res.message);
+            setPreviewUrl(null);
+            const form = document.getElementById('banner-form') as HTMLFormElement;
+            form?.reset();
+            setBanners((prev) => [res.banner as Banner, ...prev]);
+        } else {
+            toast.error(res.error || 'Gagal menambahkan banner');
+        }
+    }
+
+    const handleToggle = async (id: string, checked: boolean) => {
+        setBanners(prev => prev.map(b => b.id === id ? { ...b, active: checked } : b));
+
+        const res = await toggleBannerActive(id, checked);
+        if (res.success && res.banner) {
+            toast.success('Status banner diperbarui');
+            setBanners(prev => prev.map(b => b.id === id ? res.banner as Banner : b));
+        } else {
+            setBanners(prev => prev.map(b => b.id === id ? { ...b, active: !checked } : b));
+            toast.error('Gagal memperbarui status');
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        const oldBanners = banners;
+        setBanners(prev => prev.filter(b => b.id !== id));
+
+        const res = await deleteBanner(id);
+        if (res.success) {
+            toast.success(res.message);
+        } else {
+            setBanners(oldBanners);
+            toast.error(res.error || 'Gagal menghapus banner');
+        }
+    };
 
     return (
         <div className="space-y-8">
@@ -31,19 +77,14 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                     <CardDescription>Unggah gambar banner baru untuk ditampilkan di beranda.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form action={async (formData) => {
-                        await createBanner(formData);
-                        setPreviewUrl(null);
-                        const form = document.getElementById('banner-form') as HTMLFormElement;
-                        form?.reset();
-                    }} id="banner-form" className="space-y-4 max-w-xl">
+                    <form action={handleAction} id="banner-form" className="space-y-4 max-w-xl">
                         <div className="space-y-2">
                             <Label htmlFor="title">Judul</Label>
-                            <Input id="title" name="title" required placeholder="Summer Sale" />
+                            <Input id="title" name="title" required placeholder="Contoh: Promo Spesial" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="link">Tautan (Opsional)</Label>
-                            <Input id="link" name="link" placeholder="/products/summer-sale" />
+                            <Input id="link" name="link" placeholder="/products/promo" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="image">Gambar</Label>
@@ -64,8 +105,7 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                             />
                             {previewUrl && (
                                 <div className="mt-2 relative w-full h-40 border rounded-lg overflow-hidden bg-muted">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={previewUrl} alt="Preview" className="object-cover w-full h-full" />
+                                    <Image src={previewUrl} fill alt="Preview" className="object-cover w-full h-full" />
                                 </div>
                             )}
                         </div>
@@ -82,8 +122,13 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                 {banners.map((banner) => (
                     <Card key={banner.id} className={`overflow-hidden transition-opacity ${!banner.active ? 'opacity-75 bg-muted/50' : ''}`}>
                         <div className="relative w-full aspect-video bg-muted">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={banner.imageUrl} alt={banner.title} className="object-cover w-full h-full" />
+                            <Image
+                                src={banner.imageUrl}
+                                fill
+                                alt={banner.title}
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            />
                             {!banner.active && (
                                 <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                                     <span className="bg-background/80 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">Tidak Aktif</span>
@@ -104,7 +149,7 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                                 <div className="flex items-center space-x-2">
                                     <Switch
                                         checked={banner.active}
-                                        onCheckedChange={(checked) => toggleBannerActive(banner.id, checked)}
+                                        onCheckedChange={(checked) => handleToggle(banner.id, checked)}
                                     />
                                     <span className="text-xs text-muted-foreground">{banner.active ? 'Aktif' : 'Tidak Aktif'}</span>
                                 </div>
@@ -112,11 +157,7 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
                                     variant="ghost"
                                     size="icon"
                                     className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8"
-                                    onClick={() => {
-                                        if (confirm('Apakah Anda yakin ingin menghapus banner ini?')) {
-                                            deleteBanner(banner.id);
-                                        }
-                                    }}
+                                    onClick={() => handleDelete(banner.id)}
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </Button>

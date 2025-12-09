@@ -11,7 +11,7 @@ export function Footer() {
                             <div className="bg-primary/10 p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
                                 <Printer className="h-6 w-6 text-primary" />
                             </div>
-                            <span className="text-xl font-bold tracking-tight">PrintMaster</span>
+                            <span className="text-xl font-bold tracking-tight">Foman Printing</span>
                         </Link>
                         <p className="text-sm text-muted-foreground leading-relaxed">
                             Solusi satu pintu untuk semua kebutuhan percetakan berkualitas tinggi Anda.

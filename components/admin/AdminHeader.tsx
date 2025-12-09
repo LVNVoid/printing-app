@@ -13,6 +13,7 @@ import {
 import { useAdminContext } from "@/components/admin/AdminContext";
 import { ModeToggle } from "@/components/mode-toggle";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 export function AdminHeader() {
     const { setSidebarOpen } = useAdminContext();
@@ -39,8 +40,18 @@ export function AdminHeader() {
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="rounded-full">
-                            <User className="h-5 w-5" />
+                        <Button variant="ghost" size="icon" className="relative h-9 w-9 rounded-full overflow-hidden">
+                            {session?.user?.image ? (
+                                <Image
+                                    src={session.user.image}
+                                    alt={session.user.name || "User"}
+                                    fill
+                                    sizes="(min-width: 768px) 48px, 32px"
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <User className="h-5 w-5" />
+                            )}
                             <span className="sr-only">Menu pengguna</span>
                         </Button>
                     </DropdownMenuTrigger>

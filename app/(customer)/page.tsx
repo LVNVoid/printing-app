@@ -1,5 +1,6 @@
 import { FeaturedProducts } from '@/components/customer/FeaturedProducts';
 import { BannerSection } from '@/components/customer/BannerSection';
+import { BrandsSection } from '@/components/customer/BrandsSection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
