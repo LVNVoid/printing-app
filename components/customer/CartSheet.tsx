@@ -37,7 +37,7 @@ export function CartSheet() {
 
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetContent className="flex w-full px-4 flex-col pr-0 sm:max-w-lg">
+            <SheetContent className="flex w-full px-4 flex-col pr-0 sm:max-w-lg" aria-describedby={undefined}>
 
                 {/* Header */}
                 <SheetHeader className="px-1">
@@ -64,6 +64,7 @@ export function CartSheet() {
                                                     src={item.product.pictures[0].imageUrl}
                                                     alt={item.product.name}
                                                     fill
+                                                    sizes="(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px"
                                                     className="object-cover"
                                                 />
                                             ) : (

@@ -17,7 +17,7 @@ export const proxy = async (req: NextRequest) => {
 
   const isAdminRoute = pathname.startsWith('/admin');
 
-  if (isAdminRoute && role !== 'admin') {
+  if (isAdminRoute && role !== 'ADMIN') {
     return NextResponse.redirect(new URL('/', req.url));
   }
 

@@ -50,7 +50,9 @@ export function AdminHeader() {
                         <DropdownMenuItem>Pengaturan</DropdownMenuItem>
                         <DropdownMenuItem>Bantuan</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Keluar</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+                            Keluar
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
