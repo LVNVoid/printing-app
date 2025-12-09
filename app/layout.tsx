@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://foman.co.id'),
+  metadataBase: new URL('https://printing-app-ruddy.vercel.app'),
   title: {
     default: 'Foman Percetakan - Jasa Cetak Berkualitas & Terpercaya',
     template: '%s | Foman Percetakan'
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://foman.co.id',
+    url: 'https://printing-app-ruddy.vercel.app',
     siteName: 'Foman Percetakan',
     title: 'Foman Percetakan - Jasa Cetak Berkualitas & Terpercaya',
     description: 'Solusi lengkap untuk semua kebutuhan percetakan Anda. Kualitas terbaik, harga kompetitif, dan layanan profesional.',
