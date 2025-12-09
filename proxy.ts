@@ -15,14 +15,10 @@ export const proxy = async (req: NextRequest) => {
 
   const role = token.role;
 
-  const adminRoutes = [
-    '/admin/dashboard',
-  ];
+  const isAdminRoute = pathname.startsWith('/admin');
 
-  if (adminRoutes.some((route) => pathname.startsWith(route))) {
-    if (role !== 'admin') {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
+  if (isAdminRoute && role !== 'admin') {
+    return NextResponse.redirect(new URL('/', req.url));
   }
 
   return NextResponse.next();
@@ -30,7 +26,6 @@ export const proxy = async (req: NextRequest) => {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-   
+    '/admin/:path*',
   ],
 };

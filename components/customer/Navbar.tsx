@@ -199,10 +199,10 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                     </Button>
                                 </SheetTrigger>
                                 <SheetContent side="right" className="w-[280px] sm:w-[350px]">
-                                    <div className="flex flex-col gap-6 mt-6">
+                                    <div className="flex flex-col gap-6 mt-6 mx-2">
                                         {/* Mobile User Info */}
                                         {mounted && session && (
-                                            <div className="flex items-center gap-3 pb-4 border-b px-4">
+                                            <div className="flex items-center gap-3 pb-4 border-b">
                                                 <div className="relative h-12 w-12 rounded-full ring-2 ring-primary/10 overflow-hidden flex-shrink-0">
                                                     {session.user.image ? (
                                                         <Image
@@ -253,7 +253,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                                                             onClick={() => setIsOpen(false)}
                                                             className={`text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 transition-colors ${pathname?.startsWith('/admin') ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
                                                         >
-                                                            Dasbor Admin
+                                                            Dashboard Admin
                                                         </Link>
                                                     )}
                                                     <Link

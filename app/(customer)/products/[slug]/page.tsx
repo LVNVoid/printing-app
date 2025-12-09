@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     }
 
     const primaryImage = product.pictures[0]?.imageUrl || '/placeholder-image.jpg';
-    const productUrl = `https://foman.co.id/products/${slug}`;
+    const productUrl = `https://printing-app-ruddy.vercel.app/products/${slug}`;
 
     const seoDescription = product.description
         ? `${product.description.substring(0, 150)}${product.description.length > 150 ? '...' : ''}`

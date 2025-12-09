@@ -1,7 +1,6 @@
 import { ProductSection } from '@/components/customer/ProductSection';
 import { CategoryList } from '@/components/customer/CategoryList';
 import { ProductSkeleton } from '@/components/skeletons/ProductSkeleton';
-import prisma from '@/lib/prisma';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -26,7 +25,7 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
 
     const storeName = storeSettings?.storeName || 'Foman Percetakan';
 
-    const baseUrl = 'https://foman.co.id/products';
+    const baseUrl = 'https://printing-app-ruddy.vercel.app/products';
 
     const urlParams = new URLSearchParams();
     if (categorySlug) urlParams.set('category', categorySlug);
@@ -64,13 +63,11 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
         ...(search ? [search, `jual ${search}`, `cetak ${search}`] : []),
     ];
 
-    // Canonical URL (tanpa page parameter untuk halaman 1)
     const canonicalParams = new URLSearchParams();
     if (categorySlug) canonicalParams.set('category', categorySlug);
     if (search) canonicalParams.set('search', search);
     const canonicalUrl = `${baseUrl}${canonicalParams.toString() ? `?${canonicalParams.toString()}` : ''}`;
 
-    // Default OG Image
     const defaultOgImage = '/og-products-foman.jpg';
 
     return {
@@ -78,7 +75,6 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
         description: description,
         keywords: keywords,
 
-        // Open Graph
         openGraph: {
             title: `${title} | ${storeName}`,
             description: description,
@@ -96,7 +92,6 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
             ],
         },
 
-        // Twitter Card
         twitter: {
             card: 'summary_large_image',
             title: `${title} | ${storeName}`,
@@ -105,19 +100,17 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
             creator: '@fomanpercetakan',
         },
 
-        // Canonical dan Alternate URLs
         alternates: {
             canonical: page === 1 ? canonicalUrl : currentUrl,
         },
 
-        // Robots meta
         robots: {
-            index: page <= 10, // Index hanya 10 halaman pertama
+            index: page <= 10,
             follow: true,
             'max-image-preview': 'large',
             'max-snippet': -1,
             ...(search && {
-                index: search.length > 2, // Index hanya jika search minimal 3 karakter
+                index: search.length > 2,
             }),
         },
 

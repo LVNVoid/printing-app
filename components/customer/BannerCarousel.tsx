@@ -35,11 +35,11 @@ export function BannerCarousel({ banners }: { banners: Banner[] }) {
                         <CarouselItem key={banner.id}>
                             <div className="relative w-full aspect-[21/9] md:aspect-[3/1] overflow-hidden rounded-lg shadow-md">
                                 {banner.link ? (
-                                    <Link href={banner.link} className="block w-full h-full">
-                                        <Image src={banner.imageUrl} alt={banner.title} fill className="object-cover hover:scale-105 transition-transform duration-500" />
+                                    <Link href={banner.link} className="relative block w-full h-full">
+                                        <Image src={banner.imageUrl} alt={banner.title} fill className="object-cover hover:scale-105 transition-transform duration-500 " loading="eager" />
                                     </Link>
                                 ) : (
-                                    <Image src={banner.imageUrl} alt={banner.title} fill className="object-cover" />
+                                    <Image src={banner.imageUrl} alt={banner.title} fill className="object-cover hover:scale-105 transition-transform duration-500" loading="eager" />
                                 )}
                             </div>
                         </CarouselItem>

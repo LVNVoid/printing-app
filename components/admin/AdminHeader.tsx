@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAdminContext } from "@/components/admin/AdminContext";
 import { ModeToggle } from "@/components/mode-toggle";
+import { signOut, useSession } from "next-auth/react";
 
 export function AdminHeader() {
     const { setSidebarOpen } = useAdminContext();
+    const { data: session } = useSession();
 
     return (
         <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b px-6">
@@ -43,7 +45,7 @@ export function AdminHeader() {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
+                        <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>Pengaturan</DropdownMenuItem>
                         <DropdownMenuItem>Bantuan</DropdownMenuItem>
