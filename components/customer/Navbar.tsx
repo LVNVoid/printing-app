@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { SearchInput } from './SearchInput';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Menu, Printer, Search, ShoppingCart, User } from 'lucide-react';
+import { NotificationBell } from '@/components/NotificationBell';
 import { useState, useEffect, Suspense } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useSession, signOut } from 'next-auth/react';
@@ -53,7 +54,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center gap-6 mx-6">
+                    <nav className="hidden lg:flex items-center gap-6 mx-6">
                         <Link
                             href="/"
                             className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
@@ -108,6 +109,9 @@ export function Navbar({ storeName }: { storeName?: string }) {
                             <span className="sr-only">Cari</span>
                         </Button>
 
+                        {/* Notification Bell */}
+                        <NotificationBell />
+
                         {/* Theme Toggle */}
                         <div className="hidden sm:block">
                             <ModeToggle />
@@ -130,7 +134,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                         </Button>
 
                         {/* Desktop User Menu */}
-                        <div className="hidden md:flex items-center gap-2">
+                        <div className="hidden lg:flex items-center gap-2">
                             {!mounted ? (
                                 <div className="w-20 h-10" />
                             ) : session ? (
@@ -202,7 +206,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
                         </div>
 
                         {/* Mobile Menu */}
-                        <div className="flex md:hidden">
+                        <div className="flex lg:hidden">
                             <Sheet open={isOpen} onOpenChange={setIsOpen}>
                                 <SheetTrigger asChild>
                                     <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
@@ -344,7 +348,7 @@ export function Navbar({ storeName }: { storeName?: string }) {
 
             {/* Mobile Search Bar (Collapsible) */}
             {showSearch && (
-                <div className="lg:hidden pb-3 pt-2 animate-in slide-in-from-top-2">
+                <div className="lg:hidden pb-3 pt-2 mx-4 animate-in slide-in-from-top-2">
                     <Suspense fallback={null}>
                         <SearchInput autoFocus />
                     </Suspense>

@@ -1,6 +1,7 @@
 "use client";
 
-import { Menu, Bell, User } from "lucide-react";
+import { Menu, User } from "lucide-react";
+import { NotificationBell } from "@/components/NotificationBell";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -33,10 +34,7 @@ export function AdminHeader() {
 
             <div className="flex flex-1 items-center justify-end gap-4">
                 <ModeToggle />
-                <Button variant="ghost" size="icon">
-                    <Bell className="h-5 w-5" />
-                    <span className="sr-only">Notifikasi</span>
-                </Button>
+                <NotificationBell />
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -4,7 +4,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -46,7 +45,11 @@ export default async function OrdersPage() {
                         <TableBody>
                             {orders.map((order) => (
                                 <TableRow key={order.id}>
-                                    <TableCell className="font-medium">{order.id.slice(0, 8)}...</TableCell>
+                                    <TableCell className="font-medium">
+                                        <Link href={`/orders/${order.id}`} className="hover:underline hover:text-primary">
+                                            {order.id.slice(0, 8)}...
+                                        </Link>
+                                    </TableCell>
                                     <TableCell>{formatDate(order.createdAt)}</TableCell>
                                     <TableCell>
                                         <Badge variant={order.status === 'COMPLETED' ? 'default' : 'secondary'}>

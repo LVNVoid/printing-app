@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { createNotification } from '@/app/actions/notifications';
 
 interface GetOrdersParams {
   query?: string;
@@ -84,7 +85,11 @@ export async function getOrderById(id: string) {
         },
         items: {
           include: {
-            product: true,
+            product: {
+              include: {
+                pictures: true
+              }
+            },
           },
         },
       },
@@ -103,10 +108,49 @@ export async function getOrderById(id: string) {
 
 export async function updateOrderStatus(id: string, status: string) {
   try {
-    await prisma.order.update({
+    const updatedOrder = await prisma.order.update({
       where: { id },
       data: { status },
+      include: { user: true },
     });
+
+    // Notify Customer
+    if (updatedOrder.userId) {
+      let message = `Status pesanan #${updatedOrder.id.slice(0, 8)} berubah menjadi ${status}.`;
+      let title = 'Status Pesanan Update';
+
+      switch (status) {
+        case 'PAID':
+          title = 'Pembayaran Diterima';
+          message = `Pembayaran untuk pesanan #${updatedOrder.id.slice(0, 8)} telah kami terima. Pesanan sedang diproses.`;
+          break;
+        case 'SHIPPED':
+          title = 'Pesanan Dikirim';
+          message = `Pesanan #${updatedOrder.id.slice(0, 8)} telah dikirim.`;
+          break;
+        case 'COMPLETED':
+          title = 'Pesanan Selesai';
+          message = `Pesanan #${updatedOrder.id.slice(0, 8)} telah selesai. Terima kasih telah berbelanja di Foman Percetakan!`;
+          break;
+        case 'CANCELLED':
+          title = 'Pesanan Dibatalkan';
+          message = `Mohon maaf, pesanan #${updatedOrder.id.slice(0, 8)} telah dibatalkan.`;
+          break;
+        case 'PENDING':
+          title = 'Menunggu Pembayaran';
+          message = `Pesanan #${updatedOrder.id.slice(0, 8)} sedang menunggu pembayaran.`;
+          break;
+      }
+
+      await createNotification({
+        userId: updatedOrder.userId,
+        title: title,
+        message: message,
+        type: 'ORDER',
+        link: `/orders`,
+      });
+    }
+
     revalidatePath('/admin/orders');
     revalidatePath(`/admin/orders/${id}`);
     return { success: true };

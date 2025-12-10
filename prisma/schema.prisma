@@ -20,17 +20,18 @@ enum Role {
 }
 
 model User {
-  id              String   @id @default(uuid())
-  email           String   @unique
+  id              String         @id @default(uuid())
+  email           String         @unique
   name            String
   password        String
   profileUrl      String?
   profilePublicId String?
-  role            Role     @default(CUSTOMER)
-  phoneNumber     String   @unique
+  role            Role           @default(CUSTOMER)
+  phoneNumber     String         @unique
   orders          Order[]
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  notifications   Notification[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 }
 
 model Product {
@@ -118,4 +119,20 @@ model StoreSettings {
   openHours          String   @default("08:00 - 17:00")
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO, SUCCESS, WARNING, ERROR, ORDER
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([isRead])
 }

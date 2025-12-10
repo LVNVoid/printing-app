@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { createNotification } from '@/app/actions/notifications';
 
 interface CreateOrderParams {
   userId: string;
@@ -53,13 +54,28 @@ export async function createOrder({ userId, items }: CreateOrderParams) {
       },
       include: {
         items: true,
+        user: true,
       },
     });
+
+    // Notify Admins
+    const admins = await prisma.user.findMany({
+      where: { role: 'ADMIN' },
+    });
+
+    for (const admin of admins) {
+      await createNotification({
+        userId: admin.id,
+        title: 'Pesanan Baru Masuk',
+        message: `Pesanan baru #${order.id.slice(0, 8)} dari ${order.user.name}. Total: Rp ${total.toLocaleString('id-ID')}`,
+        type: 'ORDER',
+        link: `/admin/orders/${order.id}`,
+      });
+    }
 
     try {
       revalidatePath('/orders');
     } catch (error) {
-      // Ignore revalidatePath error in standalone scripts
       console.warn('Could not revalidate path:', error);
     }
     return { success: true, order };
