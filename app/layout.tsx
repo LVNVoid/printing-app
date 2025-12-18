@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://printing-app-ruddy.vercel.app'),
+  metadataBase: new URL('https://fomanprint.vercel.app'),
   title: {
     default: 'Foman Percetakan - Jasa Cetak Berkualitas & Terpercaya',
     template: '%s | Foman Percetakan'

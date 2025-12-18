@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     'Foman Percetakan menawarkan layanan cetak berkualitas tinggi: offset, digital printing, dan large format printing untuk kebutuhan bisnis maupun personal.',
   alternates: {
-    canonical: 'https://printing-app-ruddy.vercel.app/',
+    canonical: 'https://fomanprint.vercel.app/',
   },
   openGraph: {
     title: 'Foman Percetakan - Jasa Cetak Profesional Indonesia',
     description:
       'Percetakan modern dengan teknologi terkini. Hasil berkualitas, harga kompetitif.',
-    url: 'https://printing-app-ruddy.vercel.app/',
+    url: 'https://fomanprint.vercel.app/',
     siteName: 'Foman Percetakan',
     images: [
       {
