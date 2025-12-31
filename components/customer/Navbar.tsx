@@ -41,6 +41,30 @@ export function Navbar({ storeName }: { storeName?: string }) {
 
     return (
         <header className="sticky top-0 z-50 w-full bg-background/95 border-b backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            {/* Top Bar - Desktop Only */}
+            <div className="hidden lg:block w-full bg-muted/40 border-b h-8">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-6 text-xs font-medium text-muted-foreground">
+                    <div>
+                        Buka Senin - Jumat (08.00 - 17.00)
+                    </div>
+                    <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
+                        <Link
+                            href="/about"
+                            className={`transition-colors hover:text-primary ${pathname === '/about' ? 'text-primary font-bold' : ''}`}
+                        >
+                            Tentang Kami
+                        </Link>
+                        <Link
+                            href="/contact"
+                            className={`transition-colors hover:text-primary ${pathname === '/contact' ? 'text-primary font-bold' : ''}`}
+                        >
+                            Kontak
+                        </Link>
+
+                    </div>
+                </div>
+            </div>
+
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
                 <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4">
                     {/* Logo */}
@@ -48,46 +72,10 @@ export function Navbar({ storeName }: { storeName?: string }) {
                         <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg group-hover:bg-primary/20 transition-colors">
                             <Printer className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
                         </div>
-                        <span className="text-base sm:text-xl font-bold tracking-tight hidden xs:inline">
-                            Foman Printing
+                        <span className="text-base sm:text-xl font-bold tracking-tight xs:inline">
+                            Foman Print
                         </span>
                     </Link>
-
-                    {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center gap-6 mx-6">
-                        <Link
-                            href="/"
-                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
-                        >
-                            Beranda
-                        </Link>
-                        <Link
-                            href="/products"
-                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/products') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
-                        >
-                            Produk
-                        </Link>
-                        <Link
-                            href="/about"
-                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/about' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
-                        >
-                            Tentang Kami
-                        </Link>
-                        <Link
-                            href="/contact"
-                            className={`text-sm font-semibold transition-colors hover:text-primary ${pathname === '/contact' ? 'text-primary font-bold' : 'text-muted-foreground'}`}
-                        >
-                            Kontak
-                        </Link>
-                        {session && (
-                            <Link
-                                href="/orders"
-                                className={`text-sm font-semibold transition-colors hover:text-primary ${pathname?.startsWith('/orders') ? 'text-primary font-bold' : 'text-muted-foreground'}`}
-                            >
-                                Pesanan Saya
-                            </Link>
-                        )}
-                    </nav>
 
                     {/* Desktop Search Bar */}
                     <div className="flex-1 max-w-md mx-auto hidden lg:block">

@@ -15,6 +15,7 @@ interface ProductSectionProps {
     categorySlug?: string;
     page?: number;
     search?: string;
+    baseUrl?: string;
 }
 
 const PAGE_SIZE = 12;
@@ -84,7 +85,7 @@ const getCachedProducts = unstable_cache(
 
 
 
-export async function ProductSection({ categorySlug, page = 1, search }: ProductSectionProps) {
+export async function ProductSection({ categorySlug, page = 1, search, baseUrl = '/products' }: ProductSectionProps) {
     const [productsData, categoryData] = await Promise.all([
         getCachedProducts(page, categorySlug, search),
         categorySlug ? getCachedCategory(categorySlug) : Promise.resolve(null)
@@ -99,7 +100,7 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
         if (categorySlug) params.set('category', categorySlug);
         if (search) params.set('search', search);
         params.set('page', newPage.toString());
-        return `/products?${params.toString()}`;
+        return `${baseUrl}?${params.toString()}`;
     };
 
     const getPageNumbers = () => {
@@ -156,7 +157,7 @@ export async function ProductSection({ categorySlug, page = 1, search }: Product
 
                 {/* Products Grid */}
                 {products.length > 0 ? (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
                         {products.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}

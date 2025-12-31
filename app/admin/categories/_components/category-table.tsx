@@ -11,9 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { CategoryDialog } from './category-dialog';
-import { deleteCategory } from '../actions';
-import { toast } from 'sonner';
-import { useTransition } from 'react';
+import { DeleteCategoryMenuItem } from './delete-category-button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -32,20 +30,6 @@ interface CategoryTableProps {
 }
 
 export function CategoryTable({ categories }: CategoryTableProps) {
-    const [isPending, startTransition] = useTransition();
-
-    const handleDelete = async (id: string) => {
-        if (!confirm('Yakin ingin menghapus kategori ini?')) return;
-
-        startTransition(async () => {
-            const result = await deleteCategory(id);
-            if (result.success) {
-                toast.success('Kategori berhasil dihapus');
-            } else {
-                toast.error(result.error as string);
-            }
-        });
-    };
 
     return (
         <div className="rounded-md border bg-card">
@@ -91,14 +75,7 @@ export function CategoryTable({ categories }: CategoryTableProps) {
                                                         </DropdownMenuItem>
                                                     }
                                                 />
-                                                <DropdownMenuItem
-                                                    onClick={() => handleDelete(category.id)}
-                                                    className="text-red-600 focus:text-red-600"
-                                                    disabled={isPending}
-                                                >
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    Hapus
-                                                </DropdownMenuItem>
+                                                <DeleteCategoryMenuItem id={category.id} />
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>

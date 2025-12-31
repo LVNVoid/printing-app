@@ -1,7 +1,9 @@
-import { FeaturedProducts } from '@/components/customer/FeaturedProducts';
 import { BannerSection } from '@/components/customer/BannerSection';
-import { BrandsSection } from '@/components/customer/BrandsSection';
 import { Metadata } from 'next';
+import { CategoryGrid } from '@/components/customer/CategoryGrid';
+import { ProductSection } from '@/components/customer/ProductSection';
+import { Suspense } from 'react';
+import { ProductSkeleton } from '@/components/skeletons/ProductSkeleton';
 
 export const metadata: Metadata = {
   title: 'Foman Percetakan - Jasa Cetak Profesional Indonesia',
@@ -34,12 +36,33 @@ export const metadata: Metadata = {
     images: ['/og-products-foman.jpg'],
   },
 };
-const HomePage = async () => {
+
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+interface HomePageProps {
+  searchParams: SearchParams
+}
+
+const HomePage = async (props: HomePageProps) => {
+  const searchParams = await props.searchParams
+  const category = typeof searchParams.category === 'string' ? searchParams.category : undefined
+  const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page) : 1
+  const search = typeof searchParams.search === 'string' ? searchParams.search : undefined
 
   return (
     <div className="py-4 lg:py-8">
       <BannerSection />
-      <FeaturedProducts />
+      <div className="container mt-8">
+        <CategoryGrid activeCategory={category} />
+        <Suspense fallback={<ProductSkeleton />}>
+          <ProductSection
+            categorySlug={category}
+            page={page}
+            search={search}
+            baseUrl="/"
+          />
+        </Suspense>
+      </div>
     </div>
   );
 };

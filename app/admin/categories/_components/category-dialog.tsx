@@ -27,8 +27,13 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
     );
 }
 
+interface SelectedFile {
+    file: File;
+    url: string;
+}
+
 interface CategoryDialogProps {
-    category?: { id: string; name: string };
+    category?: { id: string; name: string; imageUrl?: string | null; imagePublicId?: string | null };
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
 }
@@ -36,13 +41,36 @@ interface CategoryDialogProps {
 export function CategoryDialog({ category, open: controlledOpen, onOpenChange: controlledOnOpenChange, trigger }: CategoryDialogProps & { trigger?: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const isEditing = !!category;
+    const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null);
+    const [isDeletingImage, setIsDeletingImage] = useState(false);
 
     // Use controlled state if provided, otherwise local state
     const isOpen = controlledOpen !== undefined ? controlledOpen : open;
+
+    useEffect(() => {
+        if (!isOpen) {
+            setSelectedFile(null);
+            setIsDeletingImage(false);
+        }
+        return () => {
+            if (selectedFile) URL.revokeObjectURL(selectedFile.url);
+        }
+    }, [isOpen, selectedFile]);
+
     const onOpenChange = controlledOnOpenChange || setOpen;
 
-    const action = isEditing ? updateCategory.bind(null, category.id) : createCategory;
-    const [state, formAction] = useActionState(action, null);
+    // Wrap action to handle FormData manipulation if needed
+    const actionWithImage = async (prevState: any, formData: FormData) => {
+        if (selectedFile) {
+            formData.set('image', selectedFile.file);
+        }
+        if (isDeletingImage) {
+            formData.set('deleteImage', 'true');
+        }
+        return isEditing ? updateCategory(category.id, prevState, formData) : createCategory(prevState, formData);
+    };
+
+    const [state, formAction] = useActionState(actionWithImage, null);
 
     useEffect(() => {
         if (state?.success) {
@@ -85,6 +113,74 @@ export function CategoryDialog({ category, open: controlledOpen, onOpenChange: c
                             <p className="text-sm text-red-500">{state.error.name[0]}</p>
                         )}
                     </div>
+
+                    <div className="space-y-2">
+                        <Label>Gambar Kategori (Opsional)</Label>
+                        <div className="flex gap-4 items-start">
+                            {/* Preview of new file */}
+                            {selectedFile ? (
+                                <div className="relative w-24 h-24 border rounded-md overflow-hidden bg-muted">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={selectedFile.url} alt="Preview" className="w-full h-full object-cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedFile(null)}
+                                        className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 w-5 h-5 flex items-center justify-center text-xs"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ) : (
+                                // Preview of existing image
+                                isEditing && category?.imageUrl && !isDeletingImage && (
+                                    <div className="relative w-24 h-24 border rounded-md overflow-hidden bg-muted">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={category.imageUrl} alt="Category" className="w-full h-full object-cover" />
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsDeletingImage(true)}
+                                            className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 w-5 h-5 flex items-center justify-center text-xs"
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                )
+                            )}
+
+                            <div className="flex-1">
+                                <Label htmlFor="image" className="cursor-pointer">
+                                    <div className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-muted/50 transition-colors">
+                                        <Plus className="w-4 h-4" />
+                                        <span className="text-sm">Pilih Gambar</span>
+                                    </div>
+                                    <Input
+                                        id="image"
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                if (file.size > 2 * 1024 * 1024) {
+                                                    alert('Ukuran gambar maksimal 2MB');
+                                                    return;
+                                                }
+                                                setSelectedFile({
+                                                    file,
+                                                    url: URL.createObjectURL(file)
+                                                });
+                                                setIsDeletingImage(false); // If we select new, we are effectively keeping an image (the new one)
+                                            }
+                                        }}
+                                    />
+                                </Label>
+                                <p className="text-xs text-muted-foreground mt-2">
+                                    JPG, PNG. Max 2MB.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     <DialogFooter>
                         <SubmitButton isEditing={isEditing} />
                     </DialogFooter>
