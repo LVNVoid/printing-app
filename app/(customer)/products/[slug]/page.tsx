@@ -7,6 +7,16 @@ import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 import { ProductImageGallery } from '@/components/customer/ProductImageGallery';
 
+export async function generateStaticParams() {
+    const products = await prisma.product.findMany({
+        select: { slug: true },
+    });
+
+    return products.map((product) => ({
+        slug: product.slug,
+    }));
+}
+
 interface ProductPageProps {
     params: Promise<{
         slug: string;

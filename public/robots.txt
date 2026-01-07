@@ -4,6 +4,9 @@ Allow: /
 Disallow: /admin
 Disallow: /api
 Disallow: /private
+Disallow: /checkout
+Disallow: /orders
+Disallow: /profile
 
 # Host
 Host: https://fomanprint.vercel.app
