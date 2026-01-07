@@ -2,6 +2,15 @@ import { RegisterForm } from './register-form';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Daftar Akun - Foman Percetakan',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const RegisterPage = async () => {
   const session = await getServerSession(authOptions);

@@ -4,6 +4,15 @@ import { CreditCard, DollarSign, Package, ShoppingCart, Users, TrendingUp, Clock
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard - Foman Percetakan",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function DashboardAdminPage() {
   const stats = await getDashboardStats();

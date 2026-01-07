@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://printing-app-ruddy.vercel.app',
+    url: 'https://fomanprint.vercel.app',
     siteName: 'Foman Percetakan',
     title: 'Foman Percetakan - Jasa Cetak Berkualitas & Terpercaya',
     description: 'Solusi lengkap untuk semua kebutuhan percetakan Anda. Kualitas terbaik, harga kompetitif, dan layanan profesional.',
@@ -78,7 +78,6 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'kode-verifikasi-google-anda',
-    yandex: 'kode-verifikasi-yandex-anda',
   },
 }
 

@@ -108,6 +108,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
     return (
         <div className="container space-y-6 px-4 py-10 md:space-y-8">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'Product',
+                        name: product.name,
+                        description: product.description,
+                        image: product.pictures.map((p) => p.imageUrl),
+                        sku: product.id,
+                        offers: {
+                            '@type': 'Offer',
+                            price: product.price,
+                            priceCurrency: 'IDR',
+                            availability: 'https://schema.org/InStock',
+                            url: `https://fomanprint.vercel.app/products/${product.slug}`,
+                        },
+                    }),
+                }}
+            />
 
             {/* Breadcrumb */}
             <div className="text-xs sm:text-sm md:text-base">

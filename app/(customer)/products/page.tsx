@@ -25,7 +25,7 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
 
     const storeName = storeSettings?.storeName || 'Foman Percetakan';
 
-    const baseUrl = 'https://printing-app-ruddy.vercel.app/products';
+    const baseUrl = 'https://fomanprint.vercel.app/products';
 
     const urlParams = new URLSearchParams();
     if (categorySlug) urlParams.set('category', categorySlug);

@@ -14,6 +14,15 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Pesanan Saya - Foman Percetakan',
+    robots: {
+        index: false,
+        follow: false,
+    },
+};
 
 export default async function OrdersPage() {
     const session = await getServerSession(authOptions);

@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /private
+
+# Host
+Host: https://fomanprint.vercel.app
+
+# Sitemaps
+Sitemap: https://fomanprint.vercel.app/sitemap.xml
